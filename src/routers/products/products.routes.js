@@ -1,54 +1,50 @@
 const { Router } = require("express");
 const router = Router();
-const ProductManager = require("../../manejos/manejo");
+const ProductManager = require("../../manager/productManager");
 const manager = new ProductManager("./src/data/products.json");
 
 const fileProcess = async () => {
-  let contadorId = 0;
-
   try {
-    router.get("/", async (req, res) => {
+  
+    router.get('/', async (req, res)=>{
       const products = await manager.getProducts();
-      res.json({
-        status: "success",
-        data: products,
+      const limit = req.query.limit;
+      if(limit){
+      const limitado = products.splice(0, +limit);
+        return res.json({
+          status: 'Success',
+          data: limitado
+        });
+      }
+      return res.json({
+        status: 'Success',
+        data: (products)
       });
-    });
+    })
 
     router.post("/", async (req, res) => {
       const products = await manager.getProducts();
-
-       if (products.length === 0) {
-        return contadorId = 1;
-      } else {
-        contadorId = products[products.length - 1].id + 1;
-      } 
-
-      const newProduct = { id: contadorId, status: true, thumbnails: []};
-      const product = {title: "Producto 3", description: "este es el producto 3", price: 200, category: "cualquiera", code: "abc789", stock: 25, ...newProduct};
-
+      
+      const product = req.body;
 
       if (!products.find((item) => item.code === product.code)) {
-        let atributos = Object.values(product);
-        let validacion = atributos.filter((atributo) => atributo !== undefined);
 
-        if (validacion.length < 8) {
+         if (Object.keys(product).length < 6) {
           return res.send(
-            "Falta rellenar un campo, todos los campos son obligatorios."
-          );
-        } else { 
-          products.push(product);
-          manager.addProduct(product);
+            {status:"Falta rellenar un campo, todos los campos son obligatorios."}
+          ); 
+        } else {
+          const addProduct = await manager.addProduct(product);
 
           res.json({
             status: "Producto agregado exitosamente.",
-            data: product
+            data: addProduct
           });
           return product;
          }
-      } else {
+      }  else {
         res.send("El código de este producto ya está en uso.");
-      } 
+      }  
     });
 
     router.get("/:pid", async (req, res) => {
@@ -73,23 +69,12 @@ const fileProcess = async () => {
           error: "Product Not Found",
         });
       }
-      const newProduct = {title:"Producto 2", description:'este es el producto 2'};
-      const prodUpdate = { ...product, ...newProduct };
-      product = prodUpdate;
-      
-      const listaUpdated = products.map(item =>{
-        if(item.id === prodUpdate.id){
-          return prodUpdate;
-        }else{
-          return item;
-        }
-      })
-      manager.writeFile(listaUpdated); 
+      const newProduct = req.body;
+      const updateProduct = await manager.updateProduct(+pid, newProduct)
 
       res.json({
         status: "Success",
-        data: "Product Updated",
-        new: prodUpdate,
+        data: updateProduct
       });
     });
 

@@ -48,32 +48,17 @@ class ProductManager {
       };
     
       let product = {...productoNuevo, status: true, thumbnails: []}
-      let atributos = Object.values(product);
-      let validacion = atributos.filter((atributo) => atributo !== undefined);
-      
-      if (validacion.length < 8) {
-        return console.log(
-          "Falta rellenar un campo, todos los campos son obligatorios."
-        );
-      } else {
-        products.push(product);
-        await this.writeFile(products);
-        console.log("Producto agregado exitosamente.");
-        return product;
-      }
-    }else{
-      console.log('El código de este producto ya está en uso.');
+      products.push(product);
+      await this.writeFile(products);
+      return product; 
     }
   }
 
   async getProductById(id) {
     const productos = await this.getProducts();
     const filtrado = productos.find((prod) => prod.id === id);
-    if (!filtrado) {
-      console.log("Product Not Found");
-    } else {
-      return filtrado;
-    }
+    return filtrado;
+  
   }
 
   async updateProduct(id, cambio) {
@@ -89,15 +74,16 @@ class ProductManager {
         return item;
       }
     })
-    this.writeFile(listaUpdated);
+    await this.writeFile(listaUpdated);
+    return prodUpdated;
   }
 
   async deleteProduct(id){
     const productos = await this.getProducts();
     const filtro = productos.filter((prod)=>(id !== prod.id));
     await this.writeFile(filtro);
-    console.log('Producto eliminado exitosamente.');
   }
+
 }
 
 module.exports = ProductManager;
