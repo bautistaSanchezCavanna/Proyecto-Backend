@@ -1,14 +1,17 @@
 const { Router } = require("express");
 const router = Router();
-const productRoutes = require('./products/products.routes');
-const cartRoutes = require('./carts/carts.routes');
+const FSproductRoutes = require('./products/FSproductos.routes');
+const FScartRoutes = require('./carts/FScarts.routes');
 const fileRoutes = require('./files/files.routes');
-const viewsRoutes = require('./vistas/views.routes')
+const productsRoutes = require('./products/products.routes');
+const cartsRoutes = require('./carts/carts.routes')
 
-router.use('/products', productRoutes);
-router.use('/carts', cartRoutes);
+router.use('/FSproducts', FSproductRoutes);
+router.use('/FScarts', FScartRoutes);
 router.use('/files', fileRoutes);
-router.use('/views', viewsRoutes)
+
+router.use('/products', productsRoutes);
+router.use('/carts', cartsRoutes);
 
 
 module.exports = router;

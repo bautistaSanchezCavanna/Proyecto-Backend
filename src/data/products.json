@@ -36,10 +36,10 @@
 		"id": 4,
 		"title": "producto 4",
 		"description": "este es el producto 4",
-		"price": 200,
-		"category": "cualquiera",
+		"price": "233",
+		"category": "categoria",
 		"code": "a4",
-		"stock": 25,
+		"stock": "22",
 		"status": true,
 		"thumbnails": []
 	},
@@ -47,10 +47,10 @@
 		"id": 5,
 		"title": "producto 5",
 		"description": "este es el producto 5",
-		"price": 200,
-		"category": "cualquiera",
+		"price": "233",
+		"category": "categoria",
 		"code": "a5",
-		"stock": 25,
+		"stock": "22",
 		"status": true,
 		"thumbnails": []
 	}

@@ -1,6 +1,6 @@
 const fs = require("fs/promises");
 const {existsSync} = require('fs');
-const productManager = require("../manager/productManager");
+const productManager = require("./productManager");
 const pManager = new productManager("./src/data/products.json");
 
 
