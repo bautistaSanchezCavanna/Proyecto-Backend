@@ -7,7 +7,7 @@ const productManager = require('../../daos/mongoManagers/products.manager.js')
 const PManager = new productManager();
 
 
-const fileProcess = async () => {
+const requestsProcess = async () => {
 
   try {
     router.get("/", async (req, res) => {
@@ -90,7 +90,7 @@ const fileProcess = async () => {
   } 
 };
 
-fileProcess();
+requestsProcess();
 
 
 module.exports = router;
