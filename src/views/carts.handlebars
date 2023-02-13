@@ -1,0 +1,14 @@
+<div>
+    <h2>Carrito: {{cid}}</h2>
+    {{#each info}}
+    <div>
+        <div>
+            <h3>Productos</h3>
+            <p>Producto: {{this.product}}</p>
+            <p>Cantidad: {{this.quantity}}</p>
+        </div>
+    </div>
+    {{/each}}
+</div>
+
+<script src="/daos/mongoManagers/carts.manager.js"></script>

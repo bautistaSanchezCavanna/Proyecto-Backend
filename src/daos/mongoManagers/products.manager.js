@@ -2,9 +2,17 @@ const productModel = require('../models/product.model.js');
 
 class PManager{
 
-  async getProducts(){
-    return await productModel.find();
+  async getProducts(num, sort){
+    if(sort){
+        return await productModel.find().limit(num).sort({price:sort});
+    }
+    return await productModel.find().limit(num);
   }  
+
+  async getPaginate(){
+    const products = await productModel.paginate({category: 'cualquiera'},{limit:2, page:1});
+    return products;
+  }
 
   async addProduct(data){
     return await productModel.create(data);

@@ -1,0 +1,19 @@
+<div>
+    {{#each info}}
+    <div>
+        <h2>Producto: {{this.title}}</h2>
+        <div>
+            <p>Id: {{this._id}}</p>
+            <p>Descripción: {{this.description}}</p>
+            <p>Precio: {{this.price}}</p>
+            <p>Categoría: {{this.category}}</p>
+            <p>Código: {{this.code}}</p>
+            <p>Stock: {{this.stock}}</p>
+        </div>
+        <button class="btnAgregar">Agregar al carrito</button>
+    </div>
+    {{/each}}
+</div>
+
+
+<script src="/daos/mongoManagers/products.manager.js"></script>

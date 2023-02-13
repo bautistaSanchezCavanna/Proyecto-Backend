@@ -7,13 +7,7 @@ class CManager {
   }
 
   async getCartById(cid) {
-    try {
-      return await cartsModel.findOne({
-        _id: cid,
-      }); /* .populate("products"); */
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return await cartsModel.findOne({_id: cid}).populate("products");
   }
 
   async addCart() {
@@ -21,14 +15,14 @@ class CManager {
   }
 
   async addToCart(cid, pid) {
-    let cart = await cartsModel.findOne({_id:cid});
+    let cart = await cartsModel.findOne({ _id: cid });
     const productIndex = cart.products.findIndex(
       (product) => product.product._id == pid
     );
     if (productIndex < 0) {
       return await cartsModel.findOneAndUpdate(
         { _id: cid },
-        { products: { product: { _id: pid }, quantity: 1 }  }
+        { $push: { products: { product: { _id: pid }, quantity: 1 } } }
       );
     } else {
       const existingProd = cart.products[productIndex];
@@ -36,7 +30,7 @@ class CManager {
       cart.products[productIndex] = existingProd;
       return await cartsModel.findOneAndUpdate(
         { _id: cid },
-        {products: {product:{ _id: pid}, quantity: quantity + 1}},
+        { products: { product: { _id: pid }, quantity: quantity + 1 } },
         { new: true }
       );
     }

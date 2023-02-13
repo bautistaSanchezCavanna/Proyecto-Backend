@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", apiRoutes);
 app.use("/", viewsRoutes);
 app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/src"));
+
 
 const httpServer = app.listen(PORT, () => {});
 const io = new Server(httpServer);

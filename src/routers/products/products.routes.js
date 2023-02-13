@@ -8,19 +8,35 @@ const fileProcess = async () => {
   try {
   
     router.get('/', async (req, res)=>{
-      const products = await PManager.getProducts();
-      const limit = req.query.limit;
-      if(limit){
-      const limitado = products.splice(0, +limit);
+      const {limit, sort} = req.query;
+      const products = await PManager.getProducts(limit, sort);
+      if(!limit){
+      const limitado = products.splice(0, 10);
         return res.json({
           status: 'Success',
           data: limitado
         });
       }
+      if(!sort){
+        const products = await PManager.getProducts(null, null);
+        return res.json({
+        status: 'Success',
+        data: products
+      });
+      }
       return res.json({
         status: 'Success',
-        data: (products)
+        data: products
       });
+    })
+
+    router.get('/paginate', async (req, res)=>{
+      const products = await PManager.getPaginate();
+      res.json({
+        status: "success.",
+        payload: products
+      });
+      return products
     })
 
     router.post("/", async (req, res) => {
