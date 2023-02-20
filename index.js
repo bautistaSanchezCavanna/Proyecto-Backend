@@ -2,9 +2,12 @@ const express = require("express");
 const { Server } = require("socket.io");
 const app = express();
 const PORT = 8080;
+
 const apiRoutes = require("./src/routers/app.routers");
 const viewsRoutes = require("./src/routers/vistas/views.routes");
 const handlebars = require("express-handlebars");
+
+
 
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/src/views");
@@ -52,3 +55,4 @@ mongoose.connect(
     }
   }
 );
+
