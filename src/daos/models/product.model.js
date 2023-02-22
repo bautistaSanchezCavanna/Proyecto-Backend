@@ -34,4 +34,3 @@ productSchema.plugin(mongoosePaginate);
 const productModel = mongoose.model(productCollection, productSchema);
 
 module.exports = productModel;
-//module.exports = productCollection

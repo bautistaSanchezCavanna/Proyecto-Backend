@@ -3,7 +3,7 @@ const auth = async (req, res, next) => {
       next();
     }
     else {
-      res.redirect('/accessDenied');
+      res.redirect('/accessDenied.html');
     }
   };
   

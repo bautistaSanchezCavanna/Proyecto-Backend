@@ -11,6 +11,8 @@ const MongoStore = require('connect-mongo');
 const path = require('path');
 
 const session = require('express-session');
+const { sessionMiddleware } = require('../../../middlewares/sessionCheck');
+const auth = require('../../../middlewares/auth');
 
 router.use(session({
     name:'session1',
@@ -43,8 +45,8 @@ const fileProcess = ()=>{
             res.render('realTimeProducts', data);
         })
 
-        router.get('/products', async (req, res)=>{
-            const email = req.session?.user;
+        router.get('/products', auth, async (req, res)=>{
+            const email = req.session?.user.email;
             const products = await productService.getProducts();
             const data = {
                 title: 'Products',
@@ -66,14 +68,14 @@ const fileProcess = ()=>{
             res.render('carts', data)
         })
 
-        router.get('/login', async (req, res)=>{
-            res.render('login');
-            let {email, password} = req.query;
-            //req.session.isAdmin = email.split('@')[1].includes('admin') ?? false;
-            req.session.user = email;
-            if(email === 'pepe@email.com'){
-                res.redirect('/products');
-            }
+        router.get('/login', sessionMiddleware, async (req, res)=>{
+            const data = {title:'Login'};
+            res.render('login', data);
+        })
+
+        router.get('/register', sessionMiddleware, async (req, res)=>{
+            const data = {title:'Sign Up'};
+            res.render('register', data);
         })
         
         router.get('/logout', async (req, res)=>{

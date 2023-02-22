@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-//const productsCollection = require('./product.model.js');
 const cartsCollection = "carts";
 
 const cartsSchema = new mongoose.Schema({
@@ -8,7 +7,7 @@ const cartsSchema = new mongoose.Schema({
             {
               product: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "products",
+                ref: 'products'
               },
               quantity: { type: Number, default: 1, required: true },
             },

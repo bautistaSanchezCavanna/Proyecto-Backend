@@ -3,10 +3,13 @@ const { Server } = require("socket.io");
 const app = express();
 const PORT = 8080;
 
+const MongoStore = require('connect-mongo');
+const handlebars = require("express-handlebars");
+const session = require('express-session');
+
 const apiRoutes = require("./src/routers/app.routers");
 const viewsRoutes = require("./src/routers/vistas/views.routes");
-const handlebars = require("express-handlebars");
-
+const sessionsRoutes = require("./src/routers/sessions/sessions.routes");
 
 
 app.engine("handlebars", handlebars.engine());
@@ -17,9 +20,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", apiRoutes);
 app.use("/", viewsRoutes);
+app.use("/sessions", sessionsRoutes);
+
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/src"));
 
+
+app.use(session({
+    name:'session1',
+    secret:'elefante',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl:'mongodb+srv://bsanchezcavanna:lJkVJFQEsEcyKtOh@codercluster.sukhsuw.mongodb.net/dataSessions?retryWrites=true&w=majority'
+    })
+  }))
 
 const httpServer = app.listen(PORT, () => {});
 const io = new Server(httpServer);
