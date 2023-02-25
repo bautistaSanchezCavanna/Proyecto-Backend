@@ -1,9 +1,11 @@
 const auth = async (req, res, next) => {
-    if (await req.session.user) {
+    if (await req.session?.isAdmin) {
       next();
     }
     else {
-      res.redirect('/accessDenied.html');
+      res.clearCookie('session1')
+      console.log('Unauthorized');
+      await res.redirect('/login');
     }
   };
   

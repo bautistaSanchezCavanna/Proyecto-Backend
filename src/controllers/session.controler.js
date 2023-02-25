@@ -3,7 +3,7 @@ const userModel  = require("../daos/models/users.model");
 const loginController = async (req, res)=>{
     const {email, password} = req.body;
     const user = await userModel.findOne({email});
-
+    
     if(!user){
         console.log("User not found, you must sign up to create one.");
     }else{
@@ -11,6 +11,7 @@ const loginController = async (req, res)=>{
             console.log('Wrong user or password');
         }else{
         req.session.user = user;
+        req.session.isAdmin = email.split('@')[1].includes('admin') ?? false
         req.session.save(err=>{
             if(err)console.log('Session error ', err);
         })
@@ -31,7 +32,7 @@ const registerController = async (req, res)=>{
     req.session.save(err=>{
         if(err)console.log('Session error ', err);
     })
-    res.redirect('/products');
+    res.redirect('/login');
 
 }
 

@@ -45,13 +45,17 @@ const fileProcess = ()=>{
             res.render('realTimeProducts', data);
         })
 
-        router.get('/products', auth, async (req, res)=>{
-            const email = req.session?.user.email;
+        router.get('/products', async (req, res)=>{
+            const name = req.session?.user.first_name;
+            let rol;
+            if(!req.session.isAdmin){
+                rol = 'User'
+            }else{rol='Admin'}
             const products = await productService.getProducts();
             const data = {
                 title: 'Products',
                 info: products,
-                user: email
+                user: {name, rol}
             };
             res.render('products', data);
         })
