@@ -5,7 +5,7 @@ loginForm?.addEventListener('submit', (e) => {
   e.preventDefault();
   const data = new FormData(loginForm);
   const info = Object.fromEntries(data);
-  fetch("/sessions/login", {
+  fetch("/sessions", {
     method: "post",
     body: JSON.stringify(info),
     headers: {'Content-Type': 'application/json'}
@@ -22,7 +22,7 @@ registerForm?.addEventListener('submit', (e) => {
     method: "post",
     body: JSON.stringify(info),
     headers: {'Content-Type': 'application/json'}
-  }).then(() => window.location.href = '/products');
+  }).then(() => window.location.href = '/');
   registerForm.reset();
 });
 
