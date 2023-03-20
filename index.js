@@ -3,9 +3,14 @@ const { Server } = require("socket.io");
 const app = express();
 const PORT = 8080;
 
+const ProductManager = require("./src/daos/fsManagers/productManager");
+const mongoose = require("mongoose");
+const passport = require("passport");
+const manager = new ProductManager("./src/data/products.json");
 const MongoStore = require('connect-mongo');
 const handlebars = require("express-handlebars");
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
 const apiRoutes = require("./src/routers/app.routers");
 const viewsRoutes = require("./src/routers/vistas/views.routes");
@@ -18,6 +23,9 @@ app.set("view engine", "handlebars");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(passport.initialize());
+
 app.use("/api", apiRoutes);
 app.use("/", viewsRoutes);
 app.use("/sessions", sessionsRoutes);
@@ -28,20 +36,18 @@ app.use(express.static(__dirname + "/src"));
 
 app.use(session({
     name:'session1',
-    secret:'elefante',
+    secret:'rinoceronte',
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
         mongoUrl:'mongodb+srv://bsanchezcavanna:lJkVJFQEsEcyKtOh@codercluster.sukhsuw.mongodb.net/dataSessions?retryWrites=true&w=majority'
     })
-  }))
+  })) 
 
 const httpServer = app.listen(PORT, () => {});
 const io = new Server(httpServer);
 
-const ProductManager = require("./src/daos/fsManagers/productManager");
-const mongoose = require("mongoose");
-const manager = new ProductManager("./src/data/products.json");
+
 
 io.on("connection", (socket) => {
   console.log("Nuevo cliente conectado, bienvenido id:", socket.id);

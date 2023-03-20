@@ -1,12 +1,42 @@
 const passport = require("passport");
 const userModel = require("../src/daos/models/users.model");
-const { hashPassword, isValidPassword } = require("../src/utils/utils");
+const {
+  hashPassword,
+  isValidPassword,
+  generateToken,
+  cookieExtractor,
+} = require("../src/utils/utils");
 const LocalStrategy = require("passport-local").Strategy;
-const GithubStrategy = require("passport-github2");
 
+const passportJwt = require("passport-jwt");
+const JwtStrategy = passportJwt.Strategy;
+const ExtractJwt = passportJwt.ExtractJwt;
+
+const GithubStrategy = require("passport-github2");
+const { SECRET_KEY } = require("../src/constants/constants");
 const appId = "299914";
 const client = "Iv1.e21216c8af583bc7";
 const secret = "3b0df5dbc46d5f089f46851664ef39f5ce4979f9";
+
+passport.use(
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+      secretOrKey: SECRET_KEY,
+    },
+    async (jwt_payload, done) => {
+      try {
+        const user = await userModel.findOne({ email: jwt_payload.email });
+        if (!user) {
+          return done(null, false, { messages: "User not found" });
+        }
+        return done(null, jwt_payload);
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+  )
+);
 
 passport.use(
   "login",
@@ -53,9 +83,11 @@ passport.use(
             first_name,
             last_name,
             age,
+            role: username.split("@")[1].includes("admin") ? 'ADMIN': 'USER',
             email: username,
             password: hashPassword(password),
           };
+          req.user = newUser;
           const userCreated = await userModel.create(newUser);
           done(null, userCreated);
         }
@@ -70,14 +102,13 @@ passport.use(
   "github",
   new GithubStrategy(
     {
-      clientID: 'Iv1.e21216c8af583bc7',
+      clientID: "Iv1.e21216c8af583bc7",
       clientSecret: "3b0df5dbc46d5f089f46851664ef39f5ce4979f9",
-      callbackURL: "http://localhost:8080/sessions/github/authentication",
+      callbackURL: "http://localhost:8080/api/users/github/authentication",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
         const data = profile._json;
-        console.log(data);
         const user = await userModel.findOne({ email: data.email });
         if (!user) {
           const newUser = {
@@ -90,8 +121,8 @@ passport.use(
           };
           const userCreated = await userModel.create(newUser);
           done(null, userCreated._doc);
-        }else{
-            done(null, user);
+        } else {
+          done(null, user);
         }
       } catch (error) {
         throw new Error(error.message);

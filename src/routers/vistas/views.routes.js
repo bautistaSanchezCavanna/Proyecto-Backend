@@ -12,7 +12,7 @@ const path = require("path");
 
 const session = require("express-session");
 const { sessionMiddleware } = require("../../../middlewares/sessionCheck");
-const auth = require("../../../middlewares/auth");
+const auth = require("../../../middlewares/auth").default;
 
 router.use(
   session({
@@ -49,11 +49,20 @@ const fileProcess = () => {
     });
 
     router.get("/products", async (req, res) => {
-        await req.session.user;
+      const products = await productService.getProducts();
+      const data = {
+        title: "Products",
+        products,
+      };
+      res.render("products", data);
+    });
+
+    router.get("/sessionProducts", async (req, res) => {
+      await req.session.user;
       if (req.session.user) {
         const name = req.session?.user.first_name;
         let rol;
-        req.session.isAdmin? rol = "Admin" : rol = "User";
+        req.session.isAdmin ? (rol = "Admin") : (rol = "User");
         const products = await productService.getProducts();
         const data = {
           title: "Products",
@@ -61,7 +70,10 @@ const fileProcess = () => {
           user: { name, rol },
         };
         res.render("products", data);
-      }else{res.redirect('/login');}
+      } else {
+        console.log("quak");
+        res.redirect("/");
+      }
     });
 
     router.get("/carts/:cid", async (req, res) => {
@@ -76,26 +88,20 @@ const fileProcess = () => {
       res.render("carts", data);
     });
 
-    router.get("/", sessionMiddleware, async (req, res) => {
+    router.get("/", async (req, res) => {
       const data = { title: "Login" };
       res.render("login", data);
     });
 
-    router.get("/register", sessionMiddleware, async (req, res) => {
+    router.get("/register", async (req, res) => {
       const data = { title: "Sign Up" };
       res.render("register", data);
     });
 
     router.get("/logout", async (req, res) => {
-      req.session.destroy((err) => {
-        if (!err) {
-          const html =
-            '<h1>Logout successfull</h1><a href="/">LogIn again</a>';
-          res.send(html);
-        } else {
-          res.send("ERROR:", err);
-        }
-      });
+      res.clearCookie('cookieToken');
+      const html = '<h1>Logout successfull</h1><a href="/">LogIn again</a>';
+      res.send(html);
     });
   } catch (error) {
     throw new Error(error.message);

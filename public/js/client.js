@@ -5,7 +5,7 @@ loginForm?.addEventListener('submit', (e) => {
   e.preventDefault();
   const data = new FormData(loginForm);
   const info = Object.fromEntries(data);
-  fetch("/sessions", {
+  fetch("/api/users/login", {
     method: "post",
     body: JSON.stringify(info),
     headers: {'Content-Type': 'application/json'}
@@ -17,8 +17,7 @@ registerForm?.addEventListener('submit', (e) => {
   e.preventDefault();
   const data = new FormData(registerForm);
   const info = Object.fromEntries(data);
-  console.log(info);
-  fetch("/sessions/register", {
+  fetch("/api/users/register", {
     method: "post",
     body: JSON.stringify(info),
     headers: {'Content-Type': 'application/json'}

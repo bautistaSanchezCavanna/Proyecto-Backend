@@ -6,7 +6,7 @@ const router = Router();
 const sessionsProcess = async () => {
   try {
     router.post(
-      "/",
+      "/login",
       passport.authenticate("login", { failureRedirect: "/loginError" }),
       (req, res) => {
         if (!req.user) {
@@ -19,8 +19,7 @@ const sessionsProcess = async () => {
           email: req.user.email,
         };
         req.session.user = sessionUser;
-        req.session.isAdmin =
-          req.user.email.split("@")[1].includes("admin") ?? false;
+        req.session.isAdmin = req.user.email.split("@")[1].includes("admin") ?? false;
         res.json({ status: "OK", payload: sessionUser });
       }
     );
@@ -30,7 +29,7 @@ const sessionsProcess = async () => {
       passport.authenticate("register", { failureRedirect: "/registerError" }),
       (req, res) => {
         res.json({ status: "Ok", data: req.user });
-        res.redirect("/login");
+        res.redirect("/");
       }
     );
 
