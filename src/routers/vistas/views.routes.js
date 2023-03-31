@@ -1,18 +1,14 @@
-const { Router } = require("express");
+import { Router } from "express";
 const router = Router();
-const ProductManager = require("../../daos/fsManagers/productManager");
+import ProductManager from "../../daos/fsManagers/productManager.js";
 const fsPManager = new ProductManager("./src/data/products.json");
-const PManager = require("../../daos/mongoManagers/products.manager.js");
+import PManager from "../../daos/mongoManagers/products.manager.js";
 const productService = new PManager();
-const CManager = require("../../daos/mongoManagers/carts.manager.js");
+import CManager from "../../daos/mongoManagers/carts.manager.js";
 const cartService = new CManager();
-const MongoStore = require("connect-mongo");
+import MongoStore from "connect-mongo";
 
-const path = require("path");
-
-const session = require("express-session");
-const { sessionMiddleware } = require("../../../middlewares/sessionCheck");
-const auth = require("../../../middlewares/auth").default;
+import session from "express-session";
 
 router.use(
   session({
@@ -110,4 +106,4 @@ const fileProcess = () => {
 
 fileProcess();
 
-module.exports = router;
+export default router;

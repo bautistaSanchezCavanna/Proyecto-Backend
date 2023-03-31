@@ -1,7 +1,7 @@
-const userModel = require("../daos/models/users.model");
-const { hashPassword, isValidPassword } = require("../utils/utils.js");
+import {userModel} from "../daos/models/users.model.js";
+import { generateToken, isValidPassword, hashPassword } from "../utils/utils.js";
 
-const loginController = async (req, res) => {
+export const loginController = async (req, res) => {
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });
 
@@ -28,7 +28,7 @@ const loginController = async (req, res) => {
   }
 };
 
-const registerController = async (req, res) => {
+export const registerController = async (req, res) => {
   const { email, password } = req.body;
   const userExists = await userModel.findOne({ email });
   if (userExists) {
@@ -50,7 +50,7 @@ const registerController = async (req, res) => {
   res.redirect("/login");
 };
 
-const logoutController = async (req, res, next) => {
+export const logoutController = async (req, res, next) => {
   req.session.destroy((error) => {
     if (error) {
       console.log(error);
@@ -60,4 +60,3 @@ const logoutController = async (req, res, next) => {
   });
 };
 
-module.exports = { loginController, registerController, logoutController };

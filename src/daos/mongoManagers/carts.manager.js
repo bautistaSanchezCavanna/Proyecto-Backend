@@ -1,7 +1,6 @@
-const cartsModel = require("../models/carts.model.js");
-const productModel = require("../models/product.model.js");
+import {cartsModel} from "../models/carts.model.js";
 
-class CManager {
+export default class CManager {
   async getCarts() {
     return await cartsModel.find();
   }
@@ -60,4 +59,4 @@ class CManager {
   }
 }
 
-module.exports = CManager;
+

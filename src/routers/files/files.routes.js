@@ -1,7 +1,7 @@
-const { Router } = require('express');
-const multer = require('multer');
+import Router from 'express';
+import multer from 'multer';
 const router = Router();
-const path = require('path');
+import path from 'path';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb)=>{
@@ -26,4 +26,4 @@ res.json({
 })
 });
 
-module.exports = router;
+export default router;

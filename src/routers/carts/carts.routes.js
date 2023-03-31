@@ -1,10 +1,7 @@
-const { Router } = require("express");
-const cartsModel = require("../../daos/models/carts.model.js");
+import { Router } from "express";
 const router = Router();
-const cartManager = require("../../daos/mongoManagers/carts.manager.js");
+import cartManager from "../../daos/mongoManagers/carts.manager.js";
 const CManager = new cartManager("./src/data/carts.json");
-const productManager = require('../../daos/mongoManagers/products.manager.js')
-const PManager = new productManager();
 
 
 const requestsProcess = async () => {
@@ -93,4 +90,4 @@ const requestsProcess = async () => {
 requestsProcess();
 
 
-module.exports = router;
+export default router;

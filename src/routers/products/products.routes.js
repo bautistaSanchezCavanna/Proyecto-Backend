@@ -1,7 +1,7 @@
-const { Router } = require("express");
+import { Router } from "express";
 const router = Router();
 
-const manager = require('../../daos/mongoManagers/products.manager.js')
+import manager from '../../daos/mongoManagers/products.manager.js';
 const PManager = new manager();
 
 const fileProcess = async () => {
@@ -97,4 +97,4 @@ const fileProcess = async () => {
 
 fileProcess();
 
-module.exports = router;
+export default router;

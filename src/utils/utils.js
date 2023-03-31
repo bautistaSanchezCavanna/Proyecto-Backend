@@ -1,24 +1,21 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = require('../constants/constants');
+import { hashSync, genSaltSync, compareSync } from 'bcrypt';
+import pkg from 'jsonwebtoken';
+import EnvConfig from '../config/.env.config.js';
+const { sign } = pkg;
 
+export const hashPassword = (password)=> hashSync(password, genSaltSync(10));
 
-const hashPassword = (password)=> bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+export const isValidPassword = (userDB, password)=> compareSync(password, userDB.password);
 
-const isValidPassword = (userDB, password)=> bcrypt.compareSync(password, userDB.password);
-
-const generateToken = (user) =>{
-    const token = jwt.sign({...user}, SECRET_KEY, {expiresIn: '10m'});
+export const generateToken = (user) =>{
+    const token = sign({...user}, EnvConfig.SECRET_KEY, {expiresIn: '10m'});
     return token;
 }
 
-const cookieExtractor = (req)=>{
+export const cookieExtractor = (req)=>{
     let token = null;
     if(req && req.cookies){
-        token = req.cookies['cookieToken'];
+        token = req.cookies[EnvConfig.SESSION_KEY];
         return token;
     }
 }
-
-
-module.exports = {hashPassword, isValidPassword, generateToken, cookieExtractor};

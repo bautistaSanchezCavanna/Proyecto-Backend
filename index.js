@@ -1,20 +1,26 @@
-const express = require("express");
-const { Server } = require("socket.io");
+import express from "express";
+import { Server } from "socket.io";
+
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+import ProductManager from "./src/daos/fsManagers/productManager.js";
+import mongoose from "mongoose";
+import passport from "passport";
+import MongoStore from 'connect-mongo';
+import handlebars from "express-handlebars";
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
+
+import apiRoutes from "./src/routers/app.routers.js";
+import viewsRoutes from "./src/routers/vistas/views.routes.js";
+import sessionsRoutes from "./src/routers/sessions/sessions.routes.js";
+import EnvConfig from "./src/config/.env.config.js";
+
 const app = express();
-const PORT = 8080;
-
-const ProductManager = require("./src/daos/fsManagers/productManager");
-const mongoose = require("mongoose");
-const passport = require("passport");
+const PORT = EnvConfig.PORT;
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const manager = new ProductManager("./src/data/products.json");
-const MongoStore = require('connect-mongo');
-const handlebars = require("express-handlebars");
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-
-const apiRoutes = require("./src/routers/app.routers");
-const viewsRoutes = require("./src/routers/vistas/views.routes");
-const sessionsRoutes = require("./src/routers/sessions/sessions.routes");
 
 
 app.engine("handlebars", handlebars.engine());
@@ -47,8 +53,6 @@ app.use(session({
 const httpServer = app.listen(PORT, () => {});
 const io = new Server(httpServer);
 
-
-
 io.on("connection", (socket) => {
   console.log("Nuevo cliente conectado, bienvenido id:", socket.id);
 
@@ -65,10 +69,9 @@ io.on("connection", (socket) => {
   });
 });
 
-const pass = "lJkVJFQEsEcyKtOh";
 mongoose.set('strictQuery', true);
 mongoose.connect(
-  "mongodb+srv://bsanchezcavanna:lJkVJFQEsEcyKtOh@codercluster.sukhsuw.mongodb.net/ecommerce?retryWrites=true&w=majority",
+  EnvConfig.MONGO_URI,
   (error) => {
     if (error) {
       console.log("Cannot connect to database: " + error);

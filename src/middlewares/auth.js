@@ -1,4 +1,4 @@
-const auth = async (req, res, next) => {
+export default auth = async (req, res, next) => {
     if (await req.session?.isAdmin) {
       next();
     }
@@ -8,5 +8,4 @@ const auth = async (req, res, next) => {
       await res.redirect('/login');
     }
   };
-  
-  module.exports = auth;
+  //no lo uso

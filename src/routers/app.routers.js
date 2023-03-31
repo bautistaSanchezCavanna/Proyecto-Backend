@@ -1,14 +1,14 @@
-const { Router } = require("express");
+import { Router } from "express";
 const router = Router();
 
-const FSproductRoutes = require('./products/FSproductos.routes');
-const FScartRoutes = require('./carts/FScarts.routes');
-const fileRoutes = require('./files/files.routes');
+import FSproductRoutes from './products/FSproductos.routes.js';
+import FScartRoutes from './carts/FScarts.routes.js';
+import fileRoutes from './files/files.routes.js';
 
-const productsRoutes = require('./products/products.routes');
-const cartsRoutes = require('./carts/carts.routes');
-const sessionsRoutes = require('./sessions/sessions.routes');
-const usersRoutes = require('./users/users.routes');
+import productsRoutes from './products/products.routes.js';
+import cartsRoutes from './carts/carts.routes.js';
+import sessionsRoutes from './sessions/sessions.routes.js';
+import UsersRoutes from './users/users.routes.js';
 
 router.use('/FSproducts', FSproductRoutes);
 router.use('/FScarts', FScartRoutes);
@@ -17,7 +17,7 @@ router.use('/files', fileRoutes);
 router.use('/products', productsRoutes);
 router.use('/carts', cartsRoutes);
 router.use('/sessions', sessionsRoutes);
-router.use('/users', usersRoutes);
+router.use('/users', UsersRoutes.getRouter());
 
 
-module.exports = router;
+export default router;

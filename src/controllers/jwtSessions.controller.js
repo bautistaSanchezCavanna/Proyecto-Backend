@@ -1,7 +1,8 @@
-const userModel = require("../daos/models/users.model");
-const { generateToken, isValidPassword } = require("../utils/utils");
+import {userModel} from "../daos/models/users.model.js";
+import { generateToken, isValidPassword } from "../utils/utils.js";
 
-class SessionController {
+export default class SessionController {
+  
   static async login(req, res, next) {
     try {
       const { email, password } = req.body;
@@ -48,4 +49,4 @@ class SessionController {
   }
 }
 
-module.exports = { SessionController };
+

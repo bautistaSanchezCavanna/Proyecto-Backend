@@ -1,11 +1,11 @@
 <div>
     <h3>{{user.rol}}</h3>
-    <h1>Welcome {{user.name}}!</h1>
+    <h1>Welcome{{user.name}}!</h1>
     <h2>Products</h2>
     <a href="http://localhost:8080/logout">LogOut</a>
     {{#each products}}
     <div>
-        <h2>Product: </h2>
+        <h2>Product: {{this}}</h2>
         <div>
             <p>Id: </p>
             <p>Description: </p>

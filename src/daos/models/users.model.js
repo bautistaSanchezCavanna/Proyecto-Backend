@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const usersCollection = 'users';
 
 const userSchema = new mongoose.Schema({
@@ -11,6 +11,4 @@ const userSchema = new mongoose.Schema({
     githubLogin:{type:String, unique: true}
 })
 
-const userModel = mongoose.model(usersCollection, userSchema);
-
-module.exports = userModel;
+export const userModel = mongoose.model(usersCollection, userSchema);

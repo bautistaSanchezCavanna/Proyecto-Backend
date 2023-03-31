@@ -1,28 +1,22 @@
-const passport = require("passport");
-const userModel = require("../src/daos/models/users.model");
-const {
-  hashPassword,
-  isValidPassword,
-  generateToken,
-  cookieExtractor,
-} = require("../src/utils/utils");
-const LocalStrategy = require("passport-local").Strategy;
+import passport from "passport";
+import {userModel} from "../daos/models/users.model.js";
+import { hashPassword, isValidPassword, cookieExtractor } from "../utils/utils.js";
+import LocalStrategy from "passport-local";
 
-const passportJwt = require("passport-jwt");
+import passportJwt from "passport-jwt";
+
 const JwtStrategy = passportJwt.Strategy;
 const ExtractJwt = passportJwt.ExtractJwt;
 
-const GithubStrategy = require("passport-github2");
-const { SECRET_KEY } = require("../src/constants/constants");
-const appId = "299914";
-const client = "Iv1.e21216c8af583bc7";
-const secret = "3b0df5dbc46d5f089f46851664ef39f5ce4979f9";
+import GithubStrategy from "passport-github2";
+import EnvConfig from "../config/.env.config.js";
+
 
 passport.use(
   new JwtStrategy(
     {
       jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-      secretOrKey: SECRET_KEY,
+      secretOrKey: EnvConfig.SECRET_KEY,
     },
     async (jwt_payload, done) => {
       try {
@@ -140,4 +134,4 @@ passport.deserializeUser(async (id, done) => {
   done(null, user);
 });
 
-module.exports = passport;
+export default passport;

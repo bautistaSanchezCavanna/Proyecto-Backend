@@ -1,4 +1,4 @@
-const passport = require('../middlewares/passport.middleware');
+import passport from '../middlewares/passport.middleware.js';
 
 const passportCustom = (strategy)=>{
     return async(req, res, next)=>{
@@ -16,4 +16,4 @@ const passportCustom = (strategy)=>{
     }
     }
 
-module.exports = passportCustom;
+export default passportCustom;

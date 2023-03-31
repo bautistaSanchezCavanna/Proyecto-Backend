@@ -1,6 +1,6 @@
-const { Router } = require("express");
+import { Router } from "express";
 const router = Router();
-const ProductManager = require("../../daos/fsManagers/productManager");
+import ProductManager from "../../daos/fsManagers/productManager.js";
 const manager = new ProductManager("./src/data/products.json");
 
 const fileProcess = async () => {
@@ -102,4 +102,4 @@ const fileProcess = async () => {
 
 fileProcess();
 
-module.exports = router;
+export default router;

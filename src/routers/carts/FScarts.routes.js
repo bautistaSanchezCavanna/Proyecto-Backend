@@ -1,8 +1,8 @@
-const { Router } = require("express");
+import { Router } from "express";
 const router = Router();
-const cartManager = require("../../daos/fsManagers/cartManager");
+import cartManager from "../../daos/fsManagers/cartManager.js";
 const manager = new cartManager("./src/data/carts.json");
-const productManager = require("../../daos/fsManagers/productManager");
+import productManager from "../../daos/fsManagers/productManager.js";
 const pManager = new productManager("./src/data/products.json");
 
 const fileProcess = async () => {
@@ -67,4 +67,4 @@ const fileProcess = async () => {
 fileProcess();
 
 
-module.exports = router;
+export default router;

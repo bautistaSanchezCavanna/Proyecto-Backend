@@ -1,5 +1,5 @@
-const fs = require("fs/promises");
-const {existsSync} = require('fs');
+import { readFile as _readFile, writeFile as _writeFile } from "fs/promises";
+import { existsSync } from 'fs';
 
 class ProductManager {
   static contadorId = 0;
@@ -9,14 +9,14 @@ class ProductManager {
   }
 
   async readFile(){
-    const archivo = await fs.readFile(this.path, "utf-8");
+    const archivo = await _readFile(this.path, "utf-8");
     const productos = JSON.parse(archivo);
     return productos;
   }
 
   async writeFile(data){
     const string = JSON.stringify(data, null, '\t');
-    await fs.writeFile(this.path, string);
+    await _writeFile(this.path, string);
   }
 
  async getProducts() {
@@ -86,5 +86,5 @@ class ProductManager {
 
 }
 
-module.exports = ProductManager;
+export default ProductManager;
 

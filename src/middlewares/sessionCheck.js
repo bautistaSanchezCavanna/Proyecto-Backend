@@ -7,6 +7,7 @@ const sessionMiddleware = async (req, res, next) => {
     }
   };
   
-  module.exports = {
+  export default {
     sessionMiddleware
   }
+  //no lo uso

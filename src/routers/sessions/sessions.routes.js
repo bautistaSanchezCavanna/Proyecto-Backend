@@ -1,6 +1,6 @@
-const { Router } = require("express");
-const passport = require("../../../middlewares/passport.middleware.js");
-const { logoutController } = require("../../controllers/session.controler");
+import { Router } from "express";
+import passport from "../../middlewares/passport.middleware.js";
+import { logoutController } from "../../controllers/session.controler.js";
 const router = Router();
 
 const sessionsProcess = async () => {
@@ -61,4 +61,4 @@ const sessionsProcess = async () => {
 
 sessionsProcess();
 
-module.exports = router;
+export default router;

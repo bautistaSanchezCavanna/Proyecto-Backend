@@ -1,6 +1,6 @@
-const productModel = require('../models/product.model.js');
+import {productModel} from '../models/product.model.js';
 
-class PManager{
+export default class PManager{
 
   async getProducts(num, sort){
     if(sort){
@@ -30,5 +30,3 @@ class PManager{
     return await productModel.findOneAndDelete({_id:id});
   }
   }
-
-module.exports = PManager;

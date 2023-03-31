@@ -1,10 +1,10 @@
-const fs = require("fs/promises");
-const {existsSync} = require('fs');
-const productManager = require("./productManager");
+import { readFile as _readFile, writeFile as _writeFile } from "fs/promises";
+import { existsSync } from 'fs';
+import productManager from "./productManager.js";
 const pManager = new productManager("./src/data/products.json");
 
 
-class CartManager {
+export default class CartManager {
   static contadorId = 0;
 
   constructor(path) {
@@ -12,14 +12,14 @@ class CartManager {
   }
 
   async readFile(){
-    const archivo = await fs.readFile(this.path, "utf-8");
+    const archivo = await _readFile(this.path, "utf-8");
     const productos = JSON.parse(archivo);
     return productos;
   }
 
   async writeFile(data){
     const string = JSON.stringify(data, null, '\t');
-    await fs.writeFile(this.path, string);
+    await _writeFile(this.path, string);
   }
 
  async getCarts() {
@@ -63,4 +63,3 @@ class CartManager {
 
 }
 
-module.exports = CartManager;
