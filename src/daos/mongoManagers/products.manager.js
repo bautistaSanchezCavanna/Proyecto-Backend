@@ -1,32 +1,31 @@
-import {productModel} from '../models/product.model.js';
+import {productModel} from '../schemas/product.schema.js';
 
-export default class PManager{
+export default class ProductsDAO {
 
-  async getProducts(num, sort){
+  static async getProducts(num, sort){
     if(sort){
         return await productModel.find().limit(num).sort({price:sort});
     }
     return await productModel.find().limit(num);
   }  
 
-  async getPaginate(){
-    const products = await productModel.paginate({category: 'cualquiera'},{limit:2, page:1});
-    return products;
+  static async getPaginate(){
+    return await productModel.paginate({category: 'cualquiera'},{limit:2, page:1});
   }
 
-  async addProduct(data){
+  static async createProduct(data){
     return await productModel.create(data);
   }
 
-  async getProductById(id){
+  static async getProductById(id){
     return await productModel.findOne({_id: id});
   }
 
-  async updateProduct(id, data){
+  static async updateProduct(id, data){
     return await productModel.findOneAndUpdate(id, data, {new:true});
   }
 
-  async deleteProduct(id){
+  static async deleteProduct(id){
     return await productModel.findOneAndDelete({_id:id});
   }
   }

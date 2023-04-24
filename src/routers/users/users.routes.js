@@ -1,7 +1,6 @@
 import { Router } from "express";
 import passportCustom from "../../middlewares/passport-custom.middlewares.js";
-import passport from "../../middlewares/passport.middleware.js";
-import  SessionController  from "../../controllers/jwtSessions.controller.js";
+import UsersController from "../../controllers/users.controller.js";
 import CustomRouter from "../customRouter.js";
 
 export const router = Router();
@@ -41,30 +40,20 @@ export const router = Router();
 
 usersProcess(); */
 
-export  class UsersRouter extends CustomRouter {
-  init(){
-    this.post("/login", ["PUBLIC"], SessionController.login);
+export class UsersRouter extends CustomRouter {
+  init() {
+    this.post("/login", ["PUBLIC"], UsersController.login);
+    
+    this.post("/register", ["PUBLIC"], UsersController.register);
+    
+    this.get("/github", ["PUBLIC"], passportCustom("github", { scope: ["user:email"] }));
 
-    this.post("/register", ["PUBLIC"],
-    passport.authenticate("register", { failureRedirect: "/registerError" }),
-    (req, res) => {
-      res.json({ status: "Ok", data: req.user });
-      res.redirect("/");
-    }
-  );
-
-    this.get("/github", ["PUBLIC"],
-      passportCustom("github", { scope: ["user:email"] })
-    );
-
-    this.get("/github/authentication", ["PUBLIC"],
-    passportCustom("github", { failureRedirect: '/github-error' }),
-    SessionController.loginGithub
-    );
+    this.get( "/github/authentication", ["PUBLIC"], passportCustom("github", 
+    { failureRedirect: "/github-error" }), UsersController.loginGithub);
 
     this.get("/current", ["ADMIN"], passportCustom("jwt"), async (req, res) => {
       res.send({ payload: req.user });
-    }); 
+    });
   }
 }
 

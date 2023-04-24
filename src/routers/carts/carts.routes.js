@@ -1,93 +1,22 @@
-import { Router } from "express";
-const router = Router();
-import cartManager from "../../daos/mongoManagers/carts.manager.js";
-const CManager = new cartManager("./src/data/carts.json");
+import CartsController from "../../controllers/carts.controller.js";
+import CustomRouter from "../customRouter.js";
 
+export class CartsRouter extends CustomRouter {
+  init() {
+    this.get("/", ["PUBLIC"], CartsController.getCarts);
 
-const requestsProcess = async () => {
+    this.get("/:cid", ["PUBLIC"], CartsController.getCartById);
 
-  try {
-    router.get("/", async (req, res) => {
-      const carts = await CManager.getCarts();
-      res.json({
-        status: "Success",
-        data: carts,
-      });
-    });
+    this.post("/", ["PUBLIC"], CartsController.createCart);
 
-    router.get("/:cid", async (req, res) => {
-      const cid = req.params.cid;
-      const cart = await CManager.getCartById(cid);
-      if (!cart) {
-        res.status(404).json({
-          status: "error",
-          error: "Cart Not Found",
-        });
-      }
-      res.json({
-        status: "Success",
-        data: cart,
-      });
-    });
+    this.post("/:cid/product/:pid", ["PUBLIC"], CartsController.addToCart);
 
-    router.post("/", async (req, res) => {
-      const addCart = await CManager.addCart();
-      res.json({
-        status: "Success",
-        data: addCart,
-      });
-    });
+    this.delete( "/:cid/product/:pid", ["PUBLIC"], CartsController.deleteProduct);
 
-    router.post('/:cid/product/:pid', async (req, res)=>{
-        const { cid, pid } = req.params;
-        if(!cid){
-            res.send('Carrito inexistente')
-        }
-    
-        if(!pid){
-            res.send('Producto inexistente');
-        }
-        const addProduct = await CManager.addToCart(cid, pid);
-        res.json({
-           status:"Success",
-           data: addProduct 
-        })
-    })
+    this.put("/:cid/product/:pid", ["PUBLIC"], CartsController.updateCart);
 
-    router.delete('/:cid/product/:pid', async (req, res)=>{
-      const { cid, pid } = req.params;
-      const deleted = await CManager.deleteProduct(cid, pid);
-      res.json({
-        status:"Product deleted successfully from cart",
-        data: deleted 
-     })
-    })
+    this.delete("/:cid", ["PUBLIC"], CartsController.deleteCart);
+  }
+}
 
-    router.put('/:cid/product/:pid', async (req, res)=>{
-      const update = req.body;
-      const {cid, pid} = req.params;
-      console.log(update);
-      const modified = await CManager.updateQuantity(cid, pid, update);
-      res.json({
-        status:"Product updated successfully",
-        data: modified 
-      })
-    })
-
-    router.delete('/:cid', async (req, res)=>{
-      const cid = req.params;
-      const clean = await CManager.cleanCart(cid);
-      res.json({
-        status:'Cart cleaned',
-        data: clean
-      })
-    })
-  } catch (error) {
-    throw new Error(error.message);
-  } 
-};
-
-requestsProcess();
-
-
-export default router;
+export default new CartsRouter();

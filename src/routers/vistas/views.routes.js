@@ -2,13 +2,14 @@ import { Router } from "express";
 const router = Router();
 import ProductManager from "../../daos/fsManagers/productManager.js";
 const fsPManager = new ProductManager("./src/data/products.json");
-import PManager from "../../daos/mongoManagers/products.manager.js";
-const productService = new PManager();
+import ProductsDAO from "../../daos/mongoManagers/products.manager.js";
+const productService = new ProductsDAO();
 import CManager from "../../daos/mongoManagers/carts.manager.js";
 const cartService = new CManager();
 import MongoStore from "connect-mongo";
 
 import session from "express-session";
+import ViewsController from "../../controllers/views.controller.js";
 
 router.use(
   session({
@@ -23,7 +24,7 @@ router.use(
   })
 );
 
-const fileProcess = () => {
+const process = () => {
   try {
     router.get("/home", async (req, res) => {
       const products = await fsPManager.getProducts();
@@ -42,15 +43,6 @@ const fileProcess = () => {
         style: "/styles/realTimeProducts.css",
       };
       res.render("realTimeProducts", data);
-    });
-
-    router.get("/products", async (req, res) => {
-      const products = await productService.getProducts();
-      const data = {
-        title: "Products",
-        products,
-      };
-      res.render("products", data);
     });
 
     router.get("/sessionProducts", async (req, res) => {
@@ -72,38 +64,20 @@ const fileProcess = () => {
       }
     });
 
-    router.get("/carts/:cid", async (req, res) => {
-      const cid = req.params.cid;
-      const cart = await cartService.getCartById(cid);
-      const data = {
-        title: "Carrito",
-        info: cart.products,
-        cid: cid,
-      };
+    router.get("/products", ViewsController.productsView);
 
-      res.render("carts", data);
-    });
+    router.get("/carts/:cid", ViewsController.cartByIdView);
 
-    router.get("/", async (req, res) => {
-      const data = { title: "Login" };
-      res.render("login", data);
-    });
+    router.get("/", ViewsController.loginView);
 
-    router.get("/register", async (req, res) => {
-      const data = { title: "Sign Up" };
-      res.render("register", data);
-    });
+    router.get("/register", ViewsController.registerView);
 
-    router.get("/logout", async (req, res) => {
-      res.clearCookie('cookieToken');
-      const html = '<h1>Logout successfull</h1><a href="/">LogIn again</a>';
-      res.send(html);
-    });
+    router.get("/logout", ViewsController.logoutView);
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-fileProcess();
+process();
 
 export default router;

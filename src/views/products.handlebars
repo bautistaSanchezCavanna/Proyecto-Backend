@@ -1,18 +1,17 @@
 <div>
-    <h3>{{user.rol}}</h3>
-    <h1>Welcome{{user.name}}!</h1>
+    <h1>Welcome!</h1>
     <h2>Products</h2>
     <a href="http://localhost:8080/logout">LogOut</a>
     {{#each products}}
     <div>
-        <h2>Product: {{this}}</h2>
+        <h2>Product: {{this.title}}</h2>
         <div>
-            <p>Id: </p>
-            <p>Description: </p>
-            <p>Price: </p>
-            <p>Category: </p>
-            <p>Code: </p>
-            <p>Stock: </p>
+            <p>Id: {{this._id}}</p>
+            <p>Description: {{this.description}}</p>
+            <p>Price: {{this.price}}</p>
+            <p>Category: {{this.category}}</p>
+            <p>Code: {{this.code}}</p>
+            <p>Stock: {{this.stock}}</p>
         </div>
         <button class="btnAgregar">Add to cart</button>
     </div>
@@ -20,4 +19,4 @@
 </div>
 
 
-<script src="/daos/mongoManagers/products.manager.js"></script>
+<script src="/src/daos/mongoManagers/products.manager.js"></script>

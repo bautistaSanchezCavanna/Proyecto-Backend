@@ -1,16 +1,13 @@
 import passport from "passport";
-import {userModel} from "../daos/models/users.model.js";
+import {userModel} from "../daos/schemas/users.schema.js";
 import { hashPassword, isValidPassword, cookieExtractor } from "../utils/utils.js";
 import LocalStrategy from "passport-local";
-
 import passportJwt from "passport-jwt";
-
-const JwtStrategy = passportJwt.Strategy;
-const ExtractJwt = passportJwt.ExtractJwt;
-
 import GithubStrategy from "passport-github2";
 import EnvConfig from "../config/.env.config.js";
 
+const JwtStrategy = passportJwt.Strategy;
+const ExtractJwt = passportJwt.ExtractJwt;
 
 passport.use(
   new JwtStrategy(

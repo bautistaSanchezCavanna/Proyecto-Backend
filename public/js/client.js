@@ -9,7 +9,7 @@ loginForm?.addEventListener('submit', (e) => {
     method: "post",
     body: JSON.stringify(info),
     headers: {'Content-Type': 'application/json'}
-  }).then(() => window.location.href = '/products');
+  }).then(()=>window.location.href = '/products');
   loginForm.reset();
 })
 
@@ -21,7 +21,7 @@ registerForm?.addEventListener('submit', (e) => {
     method: "post",
     body: JSON.stringify(info),
     headers: {'Content-Type': 'application/json'}
-  }).then(() => window.location.href = '/');
+  }).then(window.location.href = 'http://localhost:8080/');
   registerForm.reset();
 });
 

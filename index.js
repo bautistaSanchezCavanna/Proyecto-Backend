@@ -16,6 +16,7 @@ import apiRoutes from "./src/routers/app.routers.js";
 import viewsRoutes from "./src/routers/vistas/views.routes.js";
 import sessionsRoutes from "./src/routers/sessions/sessions.routes.js";
 import EnvConfig from "./src/config/.env.config.js";
+import ProductsRouter  from "./src/routers/products/products.routes.js";
 
 const app = express();
 const PORT = EnvConfig.PORT;
