@@ -10,6 +10,7 @@ import MongoStore from "connect-mongo";
 
 import session from "express-session";
 import ViewsController from "../../controllers/views.controller.js";
+import CustomRouter from "../customRouter.js";
 
 router.use(
   session({
@@ -24,9 +25,10 @@ router.use(
   })
 );
 
-const process = () => {
-  try {
-    router.get("/home", async (req, res) => {
+export class ViewsRouter extends CustomRouter {
+
+  init() {
+    /* router.get("/home", async (req, res) => {
       const products = await fsPManager.getProducts();
       const data = {
         title: "Home",
@@ -62,22 +64,19 @@ const process = () => {
         console.log("quak");
         res.redirect("/");
       }
-    });
+    }); */
 
-    router.get("/products", ViewsController.productsView);
+    this.get("/products", ["USER", "ADMIN"], ViewsController.productsView);
 
-    router.get("/carts/:cid", ViewsController.cartByIdView);
+    this.get("/carts/:cid", ["USER", "ADMIN"], ViewsController.cartByIdView);
 
-    router.get("/", ViewsController.loginView);
+    this.get("/", ["PUBLIC"], ViewsController.loginView);
 
-    router.get("/register", ViewsController.registerView);
+    this.get("/register", ["PUBLIC"], ViewsController.registerView);
 
-    router.get("/logout", ViewsController.logoutView);
-  } catch (error) {
-    throw new Error(error.message);
-  }
+    this.get("/logout", ["USER", "ADMIN"], ViewsController.logoutView);
+  } 
 };
 
-process();
 
-export default router;
+export default new ViewsRouter();

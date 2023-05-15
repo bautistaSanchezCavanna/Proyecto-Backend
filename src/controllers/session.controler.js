@@ -1,5 +1,5 @@
 import {userModel} from "../daos/schemas/users.schema.js";
-import { generateToken, isValidPassword, hashPassword } from "../utils/utils.js";
+import { generateToken, isValidPassword, hashPassword } from "../utils/session.utils.js";
 
 export const loginController = async (req, res) => {
   const { email, password } = req.body;

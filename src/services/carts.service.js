@@ -42,7 +42,7 @@ export default class CartsService {
         return console.log("Product not found");
       }
       const productIndex = cart.products.findIndex((product) => product.product._id == pid);
-      return CartsDAO.addToCart(cid, pid, productIndex);
+      return await CartsDAO.addToCart(cid, pid, productIndex);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -71,8 +71,19 @@ export default class CartsService {
       if (!pid) {
         return console.log("Product not found");
       }
-      const modifiedCart = await CartsDAO.updateCart(cid, pid, payload);
+      return await CartsDAO.updateCart(cid, pid, payload);
     } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  static async cleanCart(cid) {
+    try {
+      if (!cid) {
+        return console.log("Cart not found");
+      }
+      return await CartsDAO.cleanCart(cid);
+      } catch (error) {
       throw new Error(error.message);
     }
   }
@@ -82,10 +93,25 @@ export default class CartsService {
       if (!cid) {
         return console.log("Cart not found");
       }
-      const cleanedCart = await CartsDAO.deleteCart(cid);
-      return cleanedCart;
+      return await CartsDAO.deleteCart(cid);
+      } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  static async purchaseCart(cid, user){
+    try {
+      if (!cid) {
+        return console.log("Cart not found");
+      }
+      if (!user) {
+        return console.log("User not found");
+      }
+      const ticket = await CartsDAO.purchaseCart(cid, user)
+      return ticket;
     } catch (error) {
       throw new Error(error.message);
     }
   }
+
 }

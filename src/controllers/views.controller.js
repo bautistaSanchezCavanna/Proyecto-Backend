@@ -1,5 +1,6 @@
 import CartsDAO from "../daos/mongoManagers/carts.manager.js";
 import ProductsDAO from "../daos/mongoManagers/products.manager.js";
+import UsersDAO from "../daos/mongoManagers/users.manager.js";
 
 export default class ViewsController {
   static async productsView(req, res, next) {
@@ -8,6 +9,7 @@ export default class ViewsController {
       const data = {
         title: "Products",
         products,
+        user: req.user,
       };
       return res.render("products", data);
     } catch (error) {
@@ -21,7 +23,7 @@ export default class ViewsController {
       const cart = await CartsDAO.getCartById(cid);
       const data = {
         title: "Carrito",
-        info: cart.products,
+        cartProducts: cart.products,
         cid: cid,
       };
 

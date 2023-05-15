@@ -1,5 +1,5 @@
 import { UsersService } from "../services/users.service.js";
-import { generateToken } from "../utils/utils.js";
+import { generateToken } from "../utils/session.utils.js";
 
 export default class UsersController {
   static async login(req, res, next) {
@@ -23,11 +23,11 @@ export default class UsersController {
     try {
     const userPayload = req.body;
     const newUser = await UsersService.register(userPayload);
-    res.status(200).json(newUser);
+    return res.sendSuccess(newUser);
      } catch (error) {
       next(error);
     }
-  }
+}
 
   static async loginGithub(req, res, next) {
     try {
@@ -39,6 +39,14 @@ export default class UsersController {
           httpOnly: true,
         })
         .redirect("/products");
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async current(req, res, next){
+    try {
+    res.sendSuccess( req.user );
     } catch (error) {
       next(error);
     }

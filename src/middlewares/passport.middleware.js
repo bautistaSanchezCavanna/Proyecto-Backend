@@ -1,6 +1,6 @@
 import passport from "passport";
 import {userModel} from "../daos/schemas/users.schema.js";
-import { hashPassword, isValidPassword, cookieExtractor } from "../utils/utils.js";
+import { hashPassword, isValidPassword, cookieExtractor } from "../utils/session.utils.js";
 import LocalStrategy from "passport-local";
 import passportJwt from "passport-jwt";
 import GithubStrategy from "passport-github2";

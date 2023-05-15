@@ -51,9 +51,7 @@ export class UsersRouter extends CustomRouter {
     this.get( "/github/authentication", ["PUBLIC"], passportCustom("github", 
     { failureRedirect: "/github-error" }), UsersController.loginGithub);
 
-    this.get("/current", ["ADMIN"], passportCustom("jwt"), async (req, res) => {
-      res.send({ payload: req.user });
-    });
+    this.get("/current", ["ADMIN"]/* , passportCustom("jwt") */, UsersController.current);
   }
 }
 

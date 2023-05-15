@@ -1,5 +1,6 @@
+import CartsDAO from "../daos/mongoManagers/carts.manager.js";
 import UsersDAO from "../daos/mongoManagers/users.manager.js";
-import { hashPassword, isValidPassword } from "../utils/utils.js";
+import { hashPassword, isValidPassword } from "../utils/session.utils.js";
 
 export class UsersService {
 
@@ -20,6 +21,7 @@ export class UsersService {
                 age: user.age,
                 role: user.role,
                 email: user.email,
+                cart:user.cart
               };
               return sessionUser;
         }
@@ -34,8 +36,10 @@ export class UsersService {
     const { first_name, last_name, age, email, password } = userPayload; 
     const user = await UsersDAO.getUserByEmail(email);
       if (user) {
-        console.log("user already exists");
+        return console.log("user already exists");
       } else {
+        const createCart = await CartsDAO.createCart();
+        const cart = await CartsDAO.getCartById(createCart._id);
         const newUser = {
           first_name,
           last_name,
@@ -43,6 +47,7 @@ export class UsersService {
           role: email.split("@")[1].includes("admin") ? "ADMIN" : "USER",
           email,
           password: hashPassword(password),
+          cart:cart._id
         };
         const createdUser = await UsersDAO.createUser(newUser);
         return createdUser;

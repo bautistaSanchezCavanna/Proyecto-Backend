@@ -5,13 +5,13 @@ import CustomRouter from "../customRouter.js";
     init() {
     this.get('/', ["PUBLIC"], ProductsController.getProducts);
      
-    this.get('/paginate', ["PUBLIC"], ProductsController.getPaginate)
+    this.get('/paginate', ["ADMIN"], ProductsController.getPaginate)
 
     this.post("/", ["ADMIN"], ProductsController.createProduct);
 
-    this.get("/:pid", ["ADMIN"], ProductsController.getProductById);
+    this.get("/:pid", ["PUBLIC"], ProductsController.getProductById);
 
-    this.put("/:pid", ["ADMIN"], ProductsController.updateProduct);
+    this.put("/:pid", ["PUBLIC"], ProductsController.updateProduct);
 
     this.delete("/:pid", ["ADMIN"], ProductsController.deleteProduct);
     
