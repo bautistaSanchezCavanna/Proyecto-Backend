@@ -1,11 +1,11 @@
-import { UsersService } from "../services/users.service.js";
+import { SessionsService } from "../services/sessions.service.js";
 import { generateToken } from "../utils/session.utils.js";
 
-export default class UsersController {
+export default class SessionsController {
   static async login(req, res, next) {
     try {
       const payload = req.body;
-      const response = await UsersService.login(payload);
+      const response = await SessionsService.login(payload);
       req.user = response;
       if (response.status) {
         return res.sendError(response, response.status);
@@ -25,7 +25,7 @@ export default class UsersController {
   static async register(req, res, next) {
     try {
       const userPayload = req.body;
-      const response = await UsersService.register(userPayload);
+      const response = await SessionsService.register(userPayload);
       if (response.status) {
         return res.sendError(response, response.status);
       }

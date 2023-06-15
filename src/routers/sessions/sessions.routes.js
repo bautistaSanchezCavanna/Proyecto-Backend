@@ -1,65 +1,24 @@
 import { Router } from "express";
-import passport from "../../middlewares/passport.middleware.js";
-import { logoutController } from "../../controllers/session.controler.js";
-const router = Router();
+import passportCustom from "../../middlewares/passport-custom.middlewares.js";
+import SessionsController from "../../controllers/sessions.controller.js";
+import CustomRouter from "../customRouter.js";
 
-const sessionsProcess = async () => {
-  try {
-    router.post(
-      "/login",
-      passport.authenticate("login", { failureRedirect: "/loginError" }),
-      (req, res) => {
-        if (!req.user) {
-          res.json({ status: "Error", data: "Wrong user or password" });
-        }
-        const sessionUser = {
-          first_name: req.user.first_name,
-          last_name: req.user.last_name,
-          age: req.user.age,
-          email: req.user.email,
-        };
-        req.session.user = sessionUser;
-        req.session.isAdmin = req.user.email.split("@")[1].includes("admin") ?? false;
-        res.json({ status: "OK", payload: sessionUser });
-      }
-    );
+export const router = Router();
 
-    router.post(
-      "/register",
-      passport.authenticate("register", { failureRedirect: "/registerError" }),
-      (req, res) => {
-        res.json({ status: "Ok", data: req.user });
-        res.redirect("/");
-      }
-    );
 
-    router.get(
-      "/github",
-      passport.authenticate("github", { scope: ["user:email"] })
-    );
+export class SessionsRouter extends CustomRouter {
+  init() {
+    this.post("/login", ["PUBLIC"], SessionsController.login);
+    
+    this.post("/register", ["PUBLIC"], SessionsController.register);
+    
+    this.get("/github", ["PUBLIC"], passportCustom("github", { scope: ["user:email"] }));
 
-    router.get(
-      "/github/authentication",
-      passport.authenticate("github", { failureRedirect: "/githubError" }),
-      async (req, res) => {
-        const sessionUser = {
-          first_name: req.user.first_name,
-          last_name: req.user.last_name,
-          age: req.user.age,
-          email: req.user.email,
-        };
-        req.session.user = sessionUser;
-        res.redirect("/products");
-      }
-    );
+    this.get( "/github/authentication", ["PUBLIC"], passportCustom("github", 
+    { failureRedirect: "/github-error" }), SessionsController.loginGithub);
 
-    router.get("/logout", logoutController);
-  } catch (error) {
-    throw new Error(error.message);
+    this.get("/current", ["ADMIN"], SessionsController.current);
   }
-};
+}
 
-sessionsProcess();
-
-
-export default router;
+export default new SessionsRouter();

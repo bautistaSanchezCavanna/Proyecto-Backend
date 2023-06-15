@@ -1,11 +1,6 @@
 import { Router } from "express";
 const router = Router();
-import ProductManager from "../../daos/fsManagers/productManager.js";
-const fsPManager = new ProductManager("./src/data/products.json");
-import ProductsDAO from "../../daos/mongoManagers/products.manager.js";
-const productService = new ProductsDAO();
-import CManager from "../../daos/mongoManagers/carts.manager.js";
-const cartService = new CManager();
+
 import MongoStore from "connect-mongo";
 
 import session from "express-session";
