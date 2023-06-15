@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div>
     <h1>HOME</h1>
     {{#each info}}
@@ -13,4 +14,21 @@
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
+=======
+<div>
+    <h1>HOME</h1>
+    {{#each info}}
+    <div>
+        <h2>Producto: {{this.title}}</h2>
+        <div>
+            <p>Descripción: {{this.description}}</p>
+            <p>Precio: {{this.price}}</p>
+            <p>Id: {{this.id}}</p>
+        </div>
+    </div>
+    {{/each}}
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+>>>>>>> origin/main
 <script src="/js/socket.script.js"></script>

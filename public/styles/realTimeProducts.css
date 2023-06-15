@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .lista{
     border-top: 2px solid pink;
     margin-top: 20px;
@@ -10,4 +11,18 @@
     padding: 20px;
     margin: 10px;
     border-radius: 25px;
+=======
+.lista{
+    border-top: 2px solid pink;
+    margin-top: 20px;
+}
+
+.productContainer{
+    background-color: rgba(250, 193, 202, 0.384);
+    width: fit-content;
+    height: fit-content;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 25px;
+>>>>>>> origin/main
 }
