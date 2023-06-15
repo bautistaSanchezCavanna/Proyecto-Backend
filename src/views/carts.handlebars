@@ -1,0 +1,22 @@
+<div>
+    <a href="/products">Volver a lista de productos</a>
+    <h2>Tu Carrito:</h2>
+    <span id="cart" cid={{cid}}></span>
+    <h3>Productos</h3>
+    {{#each cartProducts}}
+    <div>
+        <div>
+            <p>---------------------------</p>
+            <p>Producto (id): {{this.product}}</p>
+            <p>Cantidad: {{this.quantity}}</p>
+        </div>
+        <button class="btnsDelete" id="btnDelete" pid={{this.product}}>Delete from cart</button>
+    </div>
+    {{/each}}
+    <p>---------------------------</p>
+    <h3>Subtotal:</h3>
+    <button id="clean">Vaciar carrito</button><br><br>
+    <button id="purchase">Comprar</button>
+</div>
+
+<script src="/daos/mongoManagers/carts.manager.js"></script>
