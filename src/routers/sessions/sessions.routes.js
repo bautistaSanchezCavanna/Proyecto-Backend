@@ -14,8 +14,7 @@ export class SessionsRouter extends CustomRouter {
     
     this.get("/github", ["PUBLIC"], passportCustom("github", { scope: ["user:email"] }));
 
-    this.get( "/github/authentication", ["PUBLIC"], passportCustom("github", 
-    { failureRedirect: "/github-error" }), SessionsController.loginGithub);
+    this.get( "/github/authentication", ["PUBLIC"], passportCustom("github"), SessionsController.loginGithub);
 
     this.get("/current", ["ADMIN"], SessionsController.current);
   }

@@ -6,15 +6,23 @@ export default class UsersDAO {
         return await userModel.find();
     }
 
-    static async getUserByEmail(email){
-        return await userModel.findOne({ email });
+    static async getUserByEmail(mail){
+        return await userModel.findOne({ email: mail });
+    }
+
+    static async getUserById(uid){
+        return await userModel.findById(uid);
     }
 
     static async createUser(newUser){
        return await userModel.create(newUser);
     }
 
-    static async updateUser(){}
+    static async updateUser(uid, update){
+    return await userModel.findOneAndUpdate({_id: uid}, update, {new:true});
+    }
 
-    static async deleteUser(){}
+    static async deleteUser(uid){
+    return await userModel.findOneAndDelete({_id: uid});
+    }
 }

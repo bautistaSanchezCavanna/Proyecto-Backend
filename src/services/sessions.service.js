@@ -1,6 +1,6 @@
 import { HTTP_STATUS } from "../constants/constants.js";
 import CartsDAO from "../daos/mongoManagers/carts.manager.js";
-import SessionsDAO from "../daos/mongoManagers/users.manager.js";
+import UsersDAO from "../daos/mongoManagers/users.manager.js";
 import { HttpError } from "../utils/error.utils.js";
 import { hashPassword, isValidPassword } from "../utils/session.utils.js";
 
@@ -9,7 +9,7 @@ export class SessionsService {
   static async login(payload) {
     try {
         const {email, password} = payload;
-        const user = await SessionsDAO.getUserByEmail(email)
+        const user = await UsersDAO.getUserByEmail(email)
         if (!user) {
           return new HttpError("User not found, you must sign up to create one.", HTTP_STATUS.NOT_FOUND);
         } 
@@ -36,7 +36,7 @@ export class SessionsService {
   static async register(userPayload){
     try{
     const { first_name, last_name, age, email, password } = userPayload; 
-    const user = await SessionsDAO.getUserByEmail(email);
+    const user = await UsersDAO.getUserByEmail(email);
       if (user) {
         return new HttpError("User already exists", HTTP_STATUS.BAD_REQUEST);
       } else {
@@ -51,7 +51,7 @@ export class SessionsService {
           password: hashPassword(password),
           cart:cart._id
         };
-        await SessionsDAO.createUser(newUser);
+        await UsersDAO.createUser(newUser);
         const newUserDTO = {
           first_name: newUser.first_name,
           last_name: newUser.last_name,

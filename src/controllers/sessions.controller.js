@@ -1,3 +1,4 @@
+import ENV from "../config/.env.config.js";
 import { SessionsService } from "../services/sessions.service.js";
 import { generateToken } from "../utils/session.utils.js";
 
@@ -11,7 +12,7 @@ export default class SessionsController {
         return res.sendError(response, response.status);
       }
       const access_token = generateToken(response);
-      return res.cookie("cookieToken", access_token, {
+      return res.cookie(ENV.SESSION_KEY, access_token, {
         maxAge: 60 * 60 * 1000,
         httpOnly: true,
       }).redirect("/products");
@@ -38,8 +39,8 @@ export default class SessionsController {
   static async loginGithub(req, res, next) {
     try {
       const user = req.user;
-      console.log('conss', user);
       const access_token = generateToken(user);
+      
       return res.cookie("cookieToken", access_token, {
           maxAge: 60 * 60 * 1000,
           httpOnly: true,
