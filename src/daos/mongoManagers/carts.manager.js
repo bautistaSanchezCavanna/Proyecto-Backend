@@ -15,14 +15,10 @@ export default class CartsDAO {
   }
 
    static async addToCart(cid, pid, productIndex) {
-    let cart = await cartsModel.findOne({ _id: cid });
     if (productIndex < 0) {
       return await cartsModel.findOneAndUpdate({ _id: cid }, { $push: { products: { product: { _id: pid }, quantity: 1 }}});
     }else {
-      const existingProd = cart.products[productIndex];
-      let quantity = existingProd.quantity;
-      cart.products[productIndex] = existingProd;
-      return await cartsModel.findOneAndUpdate({ _id: cid }, { products: { product: { _id: pid }, quantity: quantity + 1 } }/* , { new: true } */);
+      return await cartsModel.findOneAndUpdate({ _id: cid, "products.product": pid },{ $inc: { "products.$.quantity": 1 } },{ new: true });
     } 
   } 
 
@@ -45,10 +41,10 @@ export default class CartsDAO {
 
   static async purchaseCart(data){
     const ticket = await ticketsModel.create({
-      code:'dfgfd',
-      purchase_datetime: Date(),
+      code: data.code,
+      purchase_datetime: data.date,
       amount: data.totalPrice,
-      purchaser: data.email
+      purchaser: data.email || data.githubLogin
     })
     return ticket;
   }

@@ -1,0 +1,24 @@
+<div>
+    <h1>Admin control</h1>
+    <a href="/products">Volver a lista de productos</a>
+    <h2>Users:</h2>
+    <p>______________________________________________________</p>
+    {{#each users}}
+    <div>
+        <h2>Name: {{this.name}}</h2>
+        <div>
+            <h3>Role: {{this.role}}</h3>
+            <p>Email: {{this.email}}</p>
+            <p>Id: {{this._id}}</p>
+        </div> 
+        <button class="btnsEliminarUser"  uid={{this._id}}>Eliminar Usuario</button>
+        <p>Cambiar rol a:</p>
+        <button class="rol-admin"  uid={{this._id}}>"ADMIN"</button>
+        <button class="rol-user"  uid={{this._id}}>"USER"</button>
+    </div>
+    <p>______________________________________________________</p>
+    {{/each}}
+</div>
+
+<script src="/src/daos/mongoManagers/users.manager.js"></script>
+

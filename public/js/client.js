@@ -6,6 +6,10 @@ const cart = document.getElementById('cart');
 const cleanCart = document.getElementById('clean');
 const btnsDelete = document.querySelectorAll('.btnsDelete');
 
+const deleteUser = document.querySelectorAll('.btnsEliminarUser');
+const adminRole = document.querySelectorAll('.rol-admin');
+const userRole = document.querySelectorAll('.rol-user');
+
 
 loginForm?.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -19,6 +23,7 @@ loginForm?.addEventListener("submit", (e) => {
   loginForm.reset();
 });
 
+
 registerForm?.addEventListener("submit", (e) => {
   e.preventDefault();
   const data = new FormData(registerForm);
@@ -30,6 +35,44 @@ registerForm?.addEventListener("submit", (e) => {
   }).then((window.location.href = "http://localhost:8080/"));
   registerForm.reset();
 });
+
+deleteUser.forEach(btn => {
+  btn.addEventListener('click', ()=>{
+  const uid = btn.getAttribute('uid');
+  
+    fetch(`/api/users/${uid}`, {
+      method: "delete"
+    }) 
+  });
+});
+
+adminRole.forEach(btn =>{
+  btn.addEventListener('click', ()=>{
+    const uid = btn.getAttribute('uid');
+    console.log(uid);
+     fetch(`/api/users/${uid}`, {
+      method: "put",
+      body: JSON.stringify({role: "ADMIN"}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });   
+  })
+}) 
+
+userRole.forEach(btn =>{
+  btn.addEventListener('click', ()=>{
+    const uid = btn.getAttribute('uid');
+    console.log(uid);
+     fetch(`/api/users/${uid}`, {
+      method: "put",
+      body: JSON.stringify({role: "USER"}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });   
+  })
+}) 
 
 btnsAdd.forEach(btn => {
   btn.addEventListener('click', ()=>{
@@ -61,7 +104,7 @@ btnPurchase.addEventListener('click', ()=>{
  const cid = cart.getAttribute('cid');
   fetch(`/api/carts/${cid}/purchase`, {
     method: 'post'
-  });
+  }).then( () => (window.location.href = "http://localhost:8080/ticket"));
 });
 
 cleanCart.addEventListener('click', ()=>{
@@ -70,4 +113,7 @@ cleanCart.addEventListener('click', ()=>{
      method: 'put'
    });
  });
+
+
+ 
 

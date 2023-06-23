@@ -30,6 +30,10 @@ export class ViewsRouter extends CustomRouter {
     this.get("/", ["PUBLIC"], ViewsController.loginView);
 
     this.get("/register", ["PUBLIC"], ViewsController.registerView);
+    
+    this.get("/ticket", ["USER", "ADMIN"], ViewsController.ticketView);
+
+    this.get("/users", ["ADMIN"], ViewsController.usersView);
 
     this.get("/logout", ["USER", "ADMIN"], ViewsController.logoutView);
   } 

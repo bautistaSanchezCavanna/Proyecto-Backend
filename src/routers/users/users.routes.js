@@ -5,15 +5,13 @@ import CustomRouter from "../customRouter.js";
     init() {
     this.get('/', ["PUBLIC"], UsersController.getUsers);
      
-    this.get('/email/:email', ["PUBLIC"], UsersController.getUserByEmail);
+    this.get('/email/:email', ["ADMIN"], UsersController.getUserByEmail);
 
     this.get('/uid/:uid', ["PUBLIC"], UsersController.getUserById);
 
-    //this.post("/", ["ADMIN"], UsersController.createUser);
+    this.put("/:uid", ["ADMIN"], UsersController.updateUser);
 
-    this.put("/:uid", ["PUBLIC"], UsersController.updateUser);
-
-    this.delete("/:uid", ["PUBLIC"], UsersController.deleteUser);
+    this.delete("/:uid", ["ADMIN"], UsersController.deleteUser);
     
   } 
 };

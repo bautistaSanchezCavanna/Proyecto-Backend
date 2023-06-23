@@ -23,7 +23,7 @@ export class SessionsService {
                 age: user.age,
                 role: user.role,
                 email: user.email,
-                cart:user.cart
+                cart: user.cart
               };
               return sessionUser;
         }

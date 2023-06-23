@@ -10,13 +10,13 @@
             <p>Producto (id): {{this.product}}</p>
             <p>Cantidad: {{this.quantity}}</p>
         </div>
-        <button class="btnsDelete" id="btnDelete" pid={{this.product}}>Delete from cart</button>
+        <button class="btnsDelete"  pid={{this.product}}>Delete from cart</button>
     </div>
     {{/each}}
     <p>---------------------------</p>
     <h3>Subtotal:</h3>
     <button id="clean">Vaciar carrito</button><br><br>
-    <button id="purchase">Comprar</button>
+    <button id="purchase" style="visibility: {{visibility}}"  >Comprar</button>
 </div>
 
 <script src="/daos/mongoManagers/carts.manager.js"></script>

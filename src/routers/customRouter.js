@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verify } from "jsonwebtoken";
-import EnvConfig from "../config/.env.config.js";
+import EnvConfig from "../config/env.config.js";
 import { HTTP_STATUS } from "../constants/constants.js";
 
 export default class CustomRouter {
@@ -37,6 +37,7 @@ export default class CustomRouter {
       if (roles[0] === "PUBLIC") {
         return next();
       }
+      const redirect = `<h1>Error: Not authenticated. Status: ${HTTP_STATUS.UNAUTHORIZED}</h1><h4>You must <a href="/">log in again</a></h4>`;
 
       const token = req.cookies[EnvConfig.SESSION_KEY];
       if (!token) {
@@ -44,8 +45,15 @@ export default class CustomRouter {
       };
 
       const user = verify(token, EnvConfig.SECRET_KEY);
-
-      if(!roles.includes(`${user.role}`.toUpperCase())){return res.sendError("Access denied", HTTP_STATUS.FORBIDDEN);};
+      req.user = user;
+      const githubUser = user._doc;
+      
+      if(!githubUser){
+        if(!roles.includes(`${user.role}`.toUpperCase())){return res.sendError("Access denied", HTTP_STATUS.FORBIDDEN);};
+      } else {
+        if(!roles.includes(`${githubUser.role}`.toUpperCase())){return res.sendError("Access denied", HTTP_STATUS.FORBIDDEN);};
+      }
+      
       req.user = user;
       next();
     };

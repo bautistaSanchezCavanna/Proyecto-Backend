@@ -1,6 +1,7 @@
+import jwt from "jsonwebtoken";
 import { HTTP_STATUS } from "../constants/constants.js";
 import CartsService from "../services/carts.service.js";
-
+import ENV from "../config/env.config.js";
 export default class CartsController {
 
   static async getCarts(req, res, next) {
@@ -108,13 +109,19 @@ export default class CartsController {
 
   static async purchaseCart(req, res, next){
     const {cid} = req.params;
-    const user = req.user;
+    const token = req.cookies[ENV.SESSION_KEY];
+    const user = jwt.decode(token);
     try {
       const response = await CartsService.purchaseCart(cid, user);
        if(response.status){
         return res.sendError(response, response.status);
       } 
-      return res.sendSuccess(response);
+      const ticketCookieOptions = {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000, 
+      };
+      
+      return res.cookie(ENV.TICKET_KEY, response._id, ticketCookieOptions).sendSuccess(response);
 
     } catch (error) {
       next(error);

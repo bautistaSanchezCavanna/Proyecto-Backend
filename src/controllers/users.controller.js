@@ -40,19 +40,6 @@ export default class UsersController {
         }
     }
 
-    /* static async createUser(req, res, next) {
-        const payload = req.body;
-        try {
-            const response = await UsersService.createUser(payload);
-            if (response.status) {
-                return res.sendError(response, response.status);
-            }
-            return res.sendSuccess(response);
-        } catch (error) {
-            next(error);
-        }
-    } */
-
     static async updateUser(req, res, next) {
         const uid = req.params.uid;
         const update = req.body;

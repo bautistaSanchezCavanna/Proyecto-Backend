@@ -1,6 +1,6 @@
 import { hashSync, genSaltSync, compareSync } from 'bcrypt';
 import pkg from 'jsonwebtoken';
-import EnvConfig from '../config/.env.config.js';
+import EnvConfig from '../config/env.config.js';
 const { sign } = pkg;
 
 export const hashPassword = (password)=> hashSync(password, genSaltSync(10));

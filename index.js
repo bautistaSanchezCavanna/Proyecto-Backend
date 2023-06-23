@@ -20,7 +20,7 @@ import {allowInsecurePrototypeAccess} from '@handlebars/allow-prototype-access';
 import apiRoutes from "./src/routers/app.routers.js";
 import ViewsRouter  from "./src/routers/vistas/views.routes.js";
 
-import ENV from "./src/config/.env.config.js";
+import ENV from "./src/config/env.config.js";
 import cluster from "cluster";
 import { cpus } from "os";
  
@@ -63,11 +63,11 @@ import nodemailer from 'nodemailer';
   auth: { user: 'kamryn.jones@ethereal.email', pass: 'sxM4JgjvwHFvA2Tq175' }
 }); */
 const transporter = nodemailer.createTransport({
-  host: 'smtp.ethereal.email',
+  service: ENV.MAILING_SERVICE,
   port: 587,
   auth: {
-      user: 'peyton.smith@ethereal.email',
-      pass: 'Se9PnTdCjEKYNAyrGK'
+      user: ENV.MAILING_USER,
+      pass: ENV.MAILING_PASSWORD
   }
  /*  auth: {
     user: 'zita.ebert@ethereal.email',
@@ -78,9 +78,9 @@ const transporter = nodemailer.createTransport({
 app.get('/mail', async (req, res)=>{
   try {
   const mailParams = {
-    from: 'Bata Boom <peyton.smith@ethereal.email>',
-    to: 'zita.ebert@ethereal.email',
-    subject: 'Probando probando',
+    from: `Proyecto Back <${ENV.MAILING_USER}>`,
+    to: 'bausc@hotmail.com',
+    subject: 'Probando again baby',
     text: 'Funciona, cambio.',
     attachments: []
   } 
@@ -114,3 +114,4 @@ app.get('/mail', async (req, res)=>{
         mongoUrl:'mongodb+srv://bsanchezcavanna:lJkVJFQEsEcyKtOh@codercluster.sukhsuw.mongodb.net/dataSessions?retryWrites=true&w=majority'
     })
   })) 
+ 

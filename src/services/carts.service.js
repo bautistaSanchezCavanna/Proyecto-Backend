@@ -1,3 +1,4 @@
+import shortid from "shortid";
 import { HTTP_STATUS } from "../constants/constants.js";
 import CartsDAO from "../daos/mongoManagers/carts.manager.js";
 import ProductsDAO from "../daos/mongoManagers/products.manager.js";
@@ -106,9 +107,9 @@ export default class CartsService {
 
  static async purchaseCart(cid, user){
     try {
-      /* if (!user) {
+      if (!user) {
         return new HttpError("User not found", HTTP_STATUS.NOT_FOUND);
-      }   */
+      }     
       const cart = await CartsDAO.getCartById(cid);
       if (!cart) {
         return new HttpError("Cart not found", HTTP_STATUS.NOT_FOUND);
@@ -126,20 +127,20 @@ export default class CartsService {
             console.log(`No se puede completar la compra del producto: "${productData.title}" porque no hay stock suficiente. Unidades restantes: ${productData.stock}`);
           } 
         }  
-        console.log(productsToRemove);
         for (const product of productsToRemove) {
           await CartsDAO.deleteProduct(cid, product);
         }
-
         if(totalPrice > 0){
       const date = new Date();
+      const code = shortid.generate()
       const data = {
+        code,
         date,
-        email: 'user.email :)',
+        email: user._doc?.githubLogin || user.email,
         totalPrice 
       }
-        return await CartsDAO.purchaseCart(data);
-      } 
+      return await CartsDAO.purchaseCart(data);
+    } 
 
     } catch (error) {
       throw new Error(error.message);

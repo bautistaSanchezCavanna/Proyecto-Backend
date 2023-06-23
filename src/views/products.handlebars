@@ -1,6 +1,7 @@
 <div>
     <h1>Welcome {{username}}!</h1>
     <span id="cart" cid={{user.cart}}></span>
+    <a href="{{access.ruta}}">{{access.texto}}</a><br>
     <h2>Products</h2>
     <a href="http://localhost:8080/logout">LogOut</a><br> <br>
     <a href="/carts/{{user.cart}}">Ir al carrito</a>
@@ -14,8 +15,8 @@
             <p>Category: {{this.category}}</p>
             <p>Code: {{this.code}}</p>
             <p>Stock: {{this.stock}}</p>
-        </div> 
-        <button class="btnAgregar" id="btnAddToCart" pid={{this._id}}>Add to cart</button>
+        </div>
+        <button class="btnAgregar" id="btnAddToCart" pid={{this._id}} style="visibility: visible;">Add to cart</button>
     </div>
     {{/each}}
 </div>

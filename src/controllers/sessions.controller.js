@@ -1,4 +1,4 @@
-import ENV from "../config/.env.config.js";
+import ENV from "../config/env.config.js";
 import { SessionsService } from "../services/sessions.service.js";
 import { generateToken } from "../utils/session.utils.js";
 
@@ -40,8 +40,7 @@ export default class SessionsController {
     try {
       const user = req.user;
       const access_token = generateToken(user);
-      
-      return res.cookie("cookieToken", access_token, {
+      return res.cookie(ENV.SESSION_KEY, access_token, {
           maxAge: 60 * 60 * 1000,
           httpOnly: true,
         }).redirect("/products");

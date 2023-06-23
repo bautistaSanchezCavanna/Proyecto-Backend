@@ -3,7 +3,7 @@ import { userModel } from "../schemas/users.schema.js";
 export default class UsersDAO {
 
     static async getUsers(){
-        return await userModel.find();
+        return await userModel.find(/* {role: "USER"} */);
     }
 
     static async getUserByEmail(mail){

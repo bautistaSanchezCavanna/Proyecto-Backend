@@ -4,7 +4,7 @@ import { hashPassword, isValidPassword, cookieExtractor } from "../utils/session
 import LocalStrategy from "passport-local";
 import passportJwt from "passport-jwt";
 import GithubStrategy from "passport-github2";
-import ENV from "../config/.env.config.js";
+import ENV from "../config/env.config.js";
 import CartsDAO from "../daos/mongoManagers/carts.manager.js";
 
 const JwtStrategy = passportJwt.Strategy;
@@ -99,11 +99,13 @@ passport.use(
       callbackURL: ENV.GITHUB_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
+
       try {
         const data = profile._json;
         const user = await userModel.findOne({ email: data.email });
         const createCart = await CartsDAO.createCart();
         const cart = await CartsDAO.getCartById(createCart._id);
+
         if (!user) {
           const newUser = {
             first_name: data.name?.split(" ")[0],
@@ -114,6 +116,7 @@ passport.use(
             githubLogin: data.login,
             cart:cart._id
           };
+
           const userCreated = await userModel.create(newUser);
           done(null, userCreated._doc);
         } else {
