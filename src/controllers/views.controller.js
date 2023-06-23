@@ -15,11 +15,6 @@ export default class ViewsController {
         access = {ruta:'/users', texto: 'Ir a users' };
       }
       
-      /* 
-      const stocks = products.map(product => ({ _id: product._id, stock: product.stock }));
-      console.log(stocks);
-      let availability = stocks.map(stock => stock === 0 ? false : true);
-       */
       const data = {
         title: "Products",
         products,

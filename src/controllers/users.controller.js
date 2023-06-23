@@ -14,19 +14,6 @@ export default class UsersController {
         }
     }
 
-    static async getUserByEmail(req, res, next) {
-        const email = req.params.email;
-        try {
-            const response = await UsersService.getUserByEmail(email);
-            if (response.status) {
-                return res.sendError(response, response.status);
-            }
-            return res.sendSuccess(response);
-        } catch (error) {
-            next(error);
-        }
-    }
-
     static async getUserById(req, res, next) {
         const uid = req.params.uid;
         try {

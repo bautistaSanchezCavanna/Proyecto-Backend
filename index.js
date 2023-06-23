@@ -7,11 +7,7 @@ import mongoose from "mongoose";
 import passport from "passport";
 import cookieParser from 'cookie-parser';
 
-import MongoStore from 'connect-mongo';
-import session from 'express-session';
-
 import { argsConfig } from "./src/config/args.config.js";
-
 
 import Handlebars from "handlebars";
 import handlebars from "express-handlebars";
@@ -21,9 +17,11 @@ import apiRoutes from "./src/routers/app.routers.js";
 import ViewsRouter  from "./src/routers/vistas/views.routes.js";
 
 import ENV from "./src/config/env.config.js";
-import cluster from "cluster";
-import { cpus } from "os";
- 
+
+
+import swaggerJSDoc from "swagger-jsdoc";
+import {serve as swaggerServe, setup as swaggerSetup} from 'swagger-ui-express';
+
 const app = express();
 const PORT = ENV.PORT;
 
@@ -55,13 +53,27 @@ mongoose.connect(ENV.MONGO_URI, (error) => {
 
 export const httpServer = app.listen(PORT, () => {console.log("Listening on port:", PORT);});
 
-import nodemailer from 'nodemailer'; 
 
-/* const transporter = nodemailer.createTransport({
-  host: 'smtp.ethereal.email',
-  port: 587,
-  auth: { user: 'kamryn.jones@ethereal.email', pass: 'sxM4JgjvwHFvA2Tq175' }
-}); */
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.1',
+    info:{
+      title: 'Ecommerce BSC - API',
+      description: '',
+      version: '1.0.0'
+    }
+  },
+  apis:[
+    `${process.cwd()}/src/docs/**/*.yaml`,
+  ]
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/api/doc", swaggerServe, swaggerSetup(specs));
+
+
+
+/* import nodemailer from 'nodemailer'; 
 const transporter = nodemailer.createTransport({
   service: ENV.MAILING_SERVICE,
   port: 587,
@@ -69,12 +81,7 @@ const transporter = nodemailer.createTransport({
       user: ENV.MAILING_USER,
       pass: ENV.MAILING_PASSWORD
   }
- /*  auth: {
-    user: 'zita.ebert@ethereal.email',
-    pass: 'ZU3HJpNE4rjxYWAhZb'
-} */
 });
-
 app.get('/mail', async (req, res)=>{
   try {
   const mailParams = {
@@ -90,9 +97,11 @@ app.get('/mail', async (req, res)=>{
 } catch (error) {
   console.log(error.message);
 }
-});
+}); */
 
-/* if(cluster.isPrimary){
+/* import cluster from "cluster";
+import { cpus } from "os"; 
+ if(cluster.isPrimary){
   const cores = cpus().length;
   for(let i = 0; i < cores; i++){
     cluster.fork();
@@ -103,9 +112,11 @@ app.get('/mail', async (req, res)=>{
 }else{
   app.listen(PORT, () => {console.log(`=> [${process.pid}] listening on port: ${PORT}`);});
 }
- */
+  */
 
- app.use(session({
+/* import MongoStore from 'connect-mongo';
+import session from 'express-session';
+  app.use(session({
     name:'session1',
     secret:'rinoceronte',
     resave: false,
@@ -113,5 +124,5 @@ app.get('/mail', async (req, res)=>{
     store: MongoStore.create({
         mongoUrl:'mongodb+srv://bsanchezcavanna:lJkVJFQEsEcyKtOh@codercluster.sukhsuw.mongodb.net/dataSessions?retryWrites=true&w=majority'
     })
-  })) 
+  }))  */
  

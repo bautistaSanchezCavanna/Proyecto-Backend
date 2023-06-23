@@ -7,7 +7,7 @@ import session from "express-session";
 import ViewsController from "../../controllers/views.controller.js";
 import CustomRouter from "../customRouter.js";
 
-router.use(
+/* router.use(
   session({
     name: "session1",
     secret: "elefante",
@@ -18,7 +18,7 @@ router.use(
         "mongodb+srv://bsanchezcavanna:lJkVJFQEsEcyKtOh@codercluster.sukhsuw.mongodb.net/dataSessions?retryWrites=true&w=majority",
     }),
   })
-);
+); */
 
 export class ViewsRouter extends CustomRouter {
 

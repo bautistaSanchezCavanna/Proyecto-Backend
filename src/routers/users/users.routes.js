@@ -5,9 +5,7 @@ import CustomRouter from "../customRouter.js";
     init() {
     this.get('/', ["PUBLIC"], UsersController.getUsers);
      
-    this.get('/email/:email', ["ADMIN"], UsersController.getUserByEmail);
-
-    this.get('/uid/:uid', ["PUBLIC"], UsersController.getUserById);
+    this.get('/:uid', ["PUBLIC"], UsersController.getUserById);
 
     this.put("/:uid", ["ADMIN"], UsersController.updateUser);
 

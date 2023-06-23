@@ -26,18 +26,6 @@ export class UsersService {
             throw new Error(error.message);
         }
     }
-
-    static async getUserByEmail(email) {
-        try {
-            const user = await UsersDAO.getUserByEmail(email);
-            if(!user){
-                return new HttpError("User not found", HTTP_STATUS.NOT_FOUND);
-            }
-            return user;
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    }
     
     static async getUserById(uid) {
         try {

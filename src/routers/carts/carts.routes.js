@@ -12,13 +12,13 @@ export class CartsRouter extends CustomRouter {
     this.post("/:cid/product/:pid", ["USER"], CartsController.addToCart);
 
     this.post("/:cid/purchase", ["USER"], CartsController.purchaseCart);
-
-    this.delete( "/:cid/product/:pid", ["USER", "ADMIN"], CartsController.deleteProduct);
-
-    this.put("/:cid/product/:pid", ["ADMIN"], CartsController.updateCart);
-
+    
+    //this.put("/:cid/product/:pid", ["ADMIN"], CartsController.updateCart);
+    
     this.put("/:cid/clean", ["USER", "ADMIN"], CartsController.cleanCart);
 
+    this.delete("/:cid/product/:pid", ["USER", "ADMIN"], CartsController.deleteProduct);
+    
     this.delete("/:cid", ["ADMIN"], CartsController.deleteCart);
   }
 }
