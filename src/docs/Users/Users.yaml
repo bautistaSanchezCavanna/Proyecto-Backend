@@ -13,6 +13,10 @@ paths:
                 $ref: '#components/schemas/UsersResponse'
         "500":
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/500ErrorResponse'
   
   /api/users/{userId}:
     get:
@@ -35,8 +39,16 @@ paths:
                 $ref: '#components/schemas/UserResponse'
         "404":
           description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/404ErrorResponse'
         "500":
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/500ErrorResponse'
     
     put:
       tags:
@@ -64,10 +76,22 @@ paths:
                 $ref: '#components/schemas/UserResponse'
         "400":
           description: Invalid Body format
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/400ErrorResponse'
         "404":
           description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/404ErrorResponse'
         "500":
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/500ErrorResponse'
 
     delete:
       tags:
@@ -89,8 +113,17 @@ paths:
                 $ref: '#components/schemas/UserResponse'
         "404":
           description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/404ErrorResponse'
         "500":
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/500ErrorResponse'
+          
 
 components:
   schemas:
@@ -130,7 +163,7 @@ components:
         role: USER
         password: $hwi38TYIJhsgy52d3j2y
         cart: ObjectId (abr432bvf256vtwy23)
-    
+              
     UsersResponse:
       type: object
       properties:
@@ -153,6 +186,52 @@ components:
           description: User response status
         payload:
             $ref: '#components/schemas/User'
+
+    400ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+          description: Error response status
+        payload:
+          type: object
+          properties:
+            statusCode:
+              enum: [400]
+            error:
+              enum: [Bad Request]
+
+    404ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+          description: Error response status
+        payload:
+          type: object
+          properties:
+            statusCode:
+              enum: [404]
+            error:
+              enum: [Not Found]
+
+    500ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+          description: Error response status
+        payload:
+          type: object
+          properties:
+            statusCode:
+              enum: [500]
+            error:
+              enum: [Internal Server Error]
+
 
   requestBodies:
     UpdateUserPayload:

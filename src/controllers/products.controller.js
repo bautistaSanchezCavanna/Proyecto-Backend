@@ -5,6 +5,7 @@ export default class ProductsController {
   static async getProducts(req, res, next) {
     const { limit, sort } = req.query;
     try {
+      console.log(req.query);
       const response = await ProductsService.getProducts(limit, sort);
       if(response.status){
         return res.sendError(response, response.status);
@@ -39,8 +40,9 @@ export default class ProductsController {
   }
 
   static async getPaginate(req, res, next) {
+    const {filter, limit, page} = req.query;
     try {
-      const response = await ProductsService.getPaginate();
+      const response = await ProductsService.getPaginate(filter, limit, page);
       if(response.status){
         return res.sendError(response, response.status);
       }

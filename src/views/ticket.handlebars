@@ -1,10 +1,13 @@
 <div>
     <a href="/products">Volver a lista de productos</a>
     <h2>Tu Ticket:</h2>
-    <h3>Code: {{this.code}}</h3>
-    <h3>Date: {{this.date}}</h3>
-    <h3>Amount: ${{this.amount}}</h3>
-    <h3>Purchaser: {{this.purchaser}}</h3>
+    <h3>Code: {{this.ticket.code}}</h3>
+    <h3>Date: {{this.ticket.purchase_datetime}}</h3>
+    <h3>Amount: ${{this.ticket.amount}}</h3>
+    <h3>Purchaser: {{this.ticket.purchaser}}</h3>
+</div>
+<div>
+    <p>Se enviará un correo de confirmación de compra a {{this.ticket.purchaser}} con los datos del ticket.</p>
 </div>
 
 

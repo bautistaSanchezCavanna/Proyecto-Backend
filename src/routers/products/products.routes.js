@@ -4,7 +4,7 @@ import CustomRouter from "../customRouter.js";
   export class ProductsRouter extends CustomRouter {
     init() {
     this.get('/', ["ADMIN"], ProductsController.getProducts);
-     
+
     this.get('/paginate', ["ADMIN"], ProductsController.getPaginate)
 
     this.post("/", ["ADMIN"], ProductsController.createProduct);

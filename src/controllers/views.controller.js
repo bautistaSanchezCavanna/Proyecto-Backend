@@ -5,22 +5,70 @@ import { ticketsModel } from "../daos/schemas/tickets.schemas.js";
 import { UsersService } from "../services/users.service.js";
 
 export default class ViewsController {
-  static async productsView(req, res, next) {
+  static async homeView(req, res, next){
     try {
-      const products = await ProductsDAO.getProducts();
       const user = req.user._doc || req.user;  
       let username = req.user.first_name || req.user.githubLogin || req.user._doc.githubLogin;
-      let access = {};
+      let data;
+      if(user.role === "ADMIN"){
+        data = {
+          title: "Admin Home",
+          user,
+          username
+        };
+        return res.render("admins", data);
+      }
+      data = {
+        title: "Users Home",
+        user,
+        username
+      };
+      return res.render("home", data);
+
+      } catch (error) {
+      next(error);
+    }
+  }
+
+  static async manageProductsView(req, res, next){
+    try {
+      const products = await ProductsDAO.getProducts()
+      const data = {
+        title:'Add Products',
+        products
+      }
+      return res.render("manageProducts", data)
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async productsView(req, res, next) {
+    const {limit, sort} = req.query;
+
+    try {
+      const products = await ProductsDAO.getProducts(limit, sort);
+      const user = req.user._doc || req.user;  
+      /*
+      let username = req.user.first_name || req.user.githubLogin || req.user._doc.githubLogin;
+       let access = {};
       if (user.role === "ADMIN"){
         access = {ruta:'/users', texto: 'Ir a users' };
-      }
-      
+      } */
+      const filteredProducts = products.map(({ _id, title, price, description, category, code, stock }) => ({
+        _id,
+        title,
+        price,
+        description,
+        category,
+        code,
+        stock,
+        hasStock: stock > 0
+      }));
       const data = {
         title: "Products",
-        products,
+        filteredProducts,
         user,
-        username,
-        access,
       };
       return res.render("products", data);
     } catch (error) {
@@ -33,14 +81,17 @@ export default class ViewsController {
       const cid = req.params.cid;
       const cart = await CartsDAO.getCartById(cid);
       let visibility = "hidden";
+      let text = "Tu Carrito está vacío, agrega productos."
       if(cart.products.length > 0){
-        visibility = "visible";
+          visibility = "visible";
+          text = 'Productos'
       }
       const data = {
         title: "Carrito",
         cartProducts: cart.products,
         cid,
-        visibility
+        visibility,
+        text
       };
 
       return res.render("carts", data);
@@ -71,12 +122,12 @@ export default class ViewsController {
     const tid = req.cookies.ticketID;
     try {
       const ticket = await ticketsModel.findOne({ _id: tid });
+      if(ticket === null){
+        res.render("ticketError", {title: 'Error'})
+      }
       const data = {
         title: "Ticket",
-        code: ticket.code,
-        date: ticket.purchase_datetime,
-        amount: ticket.amount,
-        purchaser: ticket.purchaser,
+        ticket
       };
       res.render("ticket", data);
     } catch (error) {

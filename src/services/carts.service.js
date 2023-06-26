@@ -9,8 +9,8 @@ export default class CartsService {
   static async getCarts() {
     try {
       const carts = await CartsDAO.getCarts();
-      if(!carts){
-        return new HttpError('Carts not found', HTTP_STATUS.NOT_FOUND)
+      if (!carts) {
+        return new HttpError('Carts not found', HTTP_STATUS.NOT_FOUND);
       }
       return carts;
     } catch (error) {
@@ -23,7 +23,7 @@ export default class CartsService {
       const cart = await CartsDAO.getCartById(cid);
       if (!cart) {
         return new HttpError("Cart not found", HTTP_STATUS.NOT_FOUND);
-      } 
+      }
       return cart;
     } catch (error) {
       throw new Error(error.message);
@@ -40,8 +40,8 @@ export default class CartsService {
 
   static async addToCart(cid, pid) {
     try {
-        const product = await ProductsDAO.getProductById(pid);
-        const cart = await CartsDAO.getCartById(cid);
+      const product = await ProductsDAO.getProductById(pid);
+      const cart = await CartsDAO.getCartById(cid);
       if (!cart) {
         return new HttpError("Cart not found", HTTP_STATUS.NOT_FOUND);
       }
@@ -89,7 +89,7 @@ export default class CartsService {
         return new HttpError("Cart not found", HTTP_STATUS.NOT_FOUND);
       }
       return await CartsDAO.cleanCart(cid);
-      } catch (error) {
+    } catch (error) {
       throw new Error(error.message);
     }
   }
@@ -100,47 +100,47 @@ export default class CartsService {
         return new HttpError("Cart not found", HTTP_STATUS.NOT_FOUND);
       }
       return await CartsDAO.deleteCart(cid);
-      } catch (error) {
+    } catch (error) {
       throw new Error(error.message);
     }
   }
 
- static async purchaseCart(cid, user){
+  static async purchaseCart(cid, user) {
     try {
       if (!user) {
         return new HttpError("User not found", HTTP_STATUS.NOT_FOUND);
-      }     
+      }
       const cart = await CartsDAO.getCartById(cid);
       if (!cart) {
         return new HttpError("Cart not found", HTTP_STATUS.NOT_FOUND);
       }
       let totalPrice = 0;
       const productsToRemove = [];
-        for(const product of cart.products){
-          const productData = await ProductsDAO.getProductById(product.product);
-          if(productData.stock >= product.quantity){
-            await ProductsDAO.updateProduct(product.product, {stock: productData.stock - product.quantity});
-            productsToRemove.push(product.product);
-            totalPrice += productData.price * product.quantity;
-          } else{
-            //return new HttpError(`No se puede completar la compra del producto: "${productData.title}" porque no hay stock suficiente. Unidades restantes: ${productData.stock}`);
-            console.log(`No se puede completar la compra del producto: "${productData.title}" porque no hay stock suficiente. Unidades restantes: ${productData.stock}`);
-          } 
-        }  
-        for (const product of productsToRemove) {
-          await CartsDAO.deleteProduct(cid, product);
+      for (const product of cart.products) {
+        const productData = await ProductsDAO.getProductById(product.product);
+        if (productData.stock >= product.quantity) {
+          await ProductsDAO.updateProduct(product.product, { stock: productData.stock - product.quantity });
+          productsToRemove.push(product.product);
+          totalPrice += productData.price * product.quantity;
+        } else {
+          const uncompletedPurchase = `No se pudo completar la compra del producto: "${productData.title}" porque no hay stock suficiente. Unidades restantes: ${productData.stock}`;
+          return new HttpError(uncompletedPurchase);
         }
-        if(totalPrice > 0){
-      const date = new Date();
-      const code = shortid.generate()
-      const data = {
-        code,
-        date,
-        email: user._doc?.githubLogin || user.email,
-        totalPrice 
       }
-      return await CartsDAO.purchaseCart(data);
-    } 
+      for (const product of productsToRemove) {
+        await CartsDAO.deleteProduct(cid, product);
+      }
+      if (totalPrice > 0) {
+        const date = new Date();
+        const code = shortid.generate();
+        const data = {
+          code,
+          date,
+          email: user._doc?.githubLogin || user.email,
+          totalPrice
+        };
+        return await CartsDAO.purchaseCart(data);
+      }
 
     } catch (error) {
       throw new Error(error.message);

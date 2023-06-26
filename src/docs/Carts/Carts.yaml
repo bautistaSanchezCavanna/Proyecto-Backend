@@ -13,6 +13,10 @@ paths:
                 $ref: '#components/schemas/CartsResponse'
         "500":
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/500ErrorResponse'
 
     post:
       tags:
@@ -27,6 +31,10 @@ paths:
                 $ref: '#components/schemas/CartResponse'
         "500":
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/500ErrorResponse'
 
   /api/carts/{cartId}:
     get:
@@ -47,10 +55,18 @@ paths:
             application/json:
               schema:
                 $ref: '#components/schemas/CartResponse'
-        "400":
+        "404":
           description: Cart Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/404ErrorResponse'
         "500":
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/500ErrorResponse'
 
     delete:
       tags:
@@ -72,6 +88,10 @@ paths:
                 $ref: '#components/schemas/CartResponse'
         "500":
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/500ErrorResponse'
 
   /api/carts/{cartId}/product/{productId}:
     post:
@@ -98,8 +118,18 @@ paths:
             application/json:
               schema:
                 $ref: '#components/schemas/CartResponse'
+        "404":
+          description: Cart/Product Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/404ErrorResponse'
         "500":
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/500ErrorResponse'
 
     delete:
       tags:
@@ -125,8 +155,18 @@ paths:
             application/json:
               schema:
                 $ref: '#components/schemas/CartResponse'
+        "404":
+          description: Cart/Product Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/404ErrorResponse'
         "500":
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/500ErrorResponse'
 
   /api/carts/{cartId}/purchase:
     post:
@@ -147,8 +187,18 @@ paths:
             application/json:
               schema:
                 $ref: '#components/schemas/CartResponse'
+        "404":
+          description: Cart Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/404ErrorResponse'
         "500":
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/500ErrorResponse'
 
   /api/carts/{cartId}/clean:
     put:
@@ -169,8 +219,18 @@ paths:
             application/json:
               schema:
                 $ref: '#components/schemas/CartResponse'
+        "404":
+          description: Cart Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/404ErrorResponse'
         "500":
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/500ErrorResponse'
 
 components:
   schemas:
@@ -221,3 +281,47 @@ components:
         payload:
             $ref: '#components/schemas/Cart'
 
+    400ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+          description: Error response status
+        payload:
+          type: object
+          properties:
+            statusCode:
+              enum: [400]
+            error:
+              enum: [Bad Request]
+
+    404ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+          description: Error response status
+        payload:
+          type: object
+          properties:
+            statusCode:
+              enum: [404]
+            error:
+              enum: [Not Found]
+
+    500ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+          description: Error response status
+        payload:
+          type: object
+          properties:
+            statusCode:
+              enum: [500]
+            error:
+              enum: [Internal Server Error]

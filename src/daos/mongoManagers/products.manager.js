@@ -4,13 +4,13 @@ export default class ProductsDAO {
 
   static async getProducts(num, sort){
     if(sort){
-        return await productModel.find().limit(num).sort({price:sort});
+        return await productModel.find().limit(num).sort(sort);
     }
     return await productModel.find().limit(num);
   }  
 
-  static async getPaginate(){
-    return await productModel.paginate({category: 'cualquiera'},{limit:2, page:1});
+  static async getPaginate(filter, limit, page){
+    return await productModel.paginate({category:filter},{limit, page});
   }
 
   static async createProduct(data){

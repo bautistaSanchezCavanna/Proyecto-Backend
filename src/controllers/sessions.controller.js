@@ -9,7 +9,8 @@ export default class SessionsController {
       const response = await SessionsService.login(payload);
       req.user = response;
       if (response.status) {
-        return res.sendError(response, response.status);
+        console.log(response);
+        return res.send(response/* , response.status */);
       }
       const access_token = generateToken(response);
       return res.cookie(ENV.SESSION_KEY, access_token, {

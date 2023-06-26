@@ -1,0 +1,30 @@
+<div>
+    <a href="/home">Volver al inicio</a>
+    <div>
+    <h2>Agregar producto</h2>
+    <form id="formAgregar">
+    <input type="text" id="input-title" placeholder="Title" name="title" required="true">
+    <input type="text" id="input-description" placeholder="Description" name="description" required="true">
+    <input type="number" id="input-price" placeholder="Precio" name="price" required="true">
+    <input type="text" id="input-category" placeholder="Categoría" name="category" required="true">
+    <input type="number" id="input-stock" placeholder="Stock" name="stock" required="true">
+    <input type="submit" value="Add to DB">
+    </form>
+    </div>
+    <p>____________________________________</p>
+    {{#each products}}
+    <div>
+        <h2>Product: {{this.title}}</h2>
+        <div>
+            <h3>Price: {{this.price}}</h3>
+            <p>Id: {{this._id}}</p>
+            <p>Description: {{this.description}}</p>
+            <p>Category: {{this.category}}</p>
+            <p>Code: {{this.code}}</p>
+            <p>Stock: {{this.stock}}</p>
+        </div>
+        <button class="deleteProduct"  pid={{this._id}}>Delete from DB</button>
+    </div>
+    {{/each}}
+
+<script src="/js/client.js"></script>

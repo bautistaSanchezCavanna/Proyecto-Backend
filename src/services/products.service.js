@@ -1,3 +1,4 @@
+import shortid from "shortid";
 import { HTTP_STATUS } from "../constants/constants.js";
 import ProductsDAO from "../daos/mongoManagers/products.manager.js";
 import { HttpError } from "../utils/error.utils.js";
@@ -23,7 +24,9 @@ export class ProductsService {
 
   static async createProduct(payload) {
     try {
-        const addedProduct = await ProductsDAO.createProduct(payload);
+        const code = shortid.generate();
+        const newProduct = {...payload, code}
+        const addedProduct = await ProductsDAO.createProduct(newProduct);
         return addedProduct
     } catch (error) {
       throw new Error(error.message);
@@ -42,9 +45,9 @@ export class ProductsService {
     }
   }
 
-  static async getPaginate() {
+  static async getPaginate(filter, limit, page) {
     try {
-      const products = await ProductsDAO.getPaginate();
+      const products = await ProductsDAO.getPaginate(filter, limit, page);
       if(!products){
         return new HttpError("Products not found", HTTP_STATUS.NOT_FOUND);
       }

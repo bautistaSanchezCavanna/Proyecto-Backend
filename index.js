@@ -71,34 +71,6 @@ const swaggerOptions = {
 const specs = swaggerJSDoc(swaggerOptions);
 app.use("/api/doc", swaggerServe, swaggerSetup(specs));
 
-
-
-/* import nodemailer from 'nodemailer'; 
-const transporter = nodemailer.createTransport({
-  service: ENV.MAILING_SERVICE,
-  port: 587,
-  auth: {
-      user: ENV.MAILING_USER,
-      pass: ENV.MAILING_PASSWORD
-  }
-});
-app.get('/mail', async (req, res)=>{
-  try {
-  const mailParams = {
-    from: `Proyecto Back <${ENV.MAILING_USER}>`,
-    to: 'bausc@hotmail.com',
-    subject: 'Probando again baby',
-    text: 'Funciona, cambio.',
-    attachments: []
-  } 
-  const response = await transporter.sendMail(mailParams);
-  console.log(response); 
-  res.send(response);
-} catch (error) {
-  console.log(error.message);
-}
-}); */
-
 /* import cluster from "cluster";
 import { cpus } from "os"; 
  if(cluster.isPrimary){

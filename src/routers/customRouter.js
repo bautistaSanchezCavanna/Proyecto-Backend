@@ -28,7 +28,7 @@ export default class CustomRouter {
 
   buildResponses(req, res, next) {
     res.sendSuccess = (payload, status = HTTP_STATUS.OK) => res.status(status).json({ result: "SUCCESS", payload });
-    res.sendError = (error, status = HTTP_STATUS.SERVER_ERROR) => res.status(status).json({ result: "ERROR", error });
+    res.sendError = (error, status = HTTP_STATUS.SERVER_ERROR) => res.status(status).send({ result: "ERROR", error });
     next();
   } 
 
@@ -37,15 +37,15 @@ export default class CustomRouter {
       if (roles[0] === "PUBLIC") {
         return next();
       }
-      const redirect = `<h1>Error: Not authenticated. Status: ${HTTP_STATUS.UNAUTHORIZED}</h1><h4>You must <a href="/">log in again</a></h4>`;
+      const redirect = `<h1>Error: Not authenticated.</h1><p>You must <a href="/">log in</a></p>`;
 
       const token = req.cookies[EnvConfig.SESSION_KEY];
       if (!token) {
+        //return res.send(redirect);
         return res.sendError("Not authenticated", HTTP_STATUS.UNAUTHORIZED);
       };
 
       const user = verify(token, EnvConfig.SECRET_KEY);
-      req.user = user;
       const githubUser = user._doc;
       
       if(!githubUser){
@@ -53,7 +53,7 @@ export default class CustomRouter {
       } else {
         if(!roles.includes(`${githubUser.role}`.toUpperCase())){return res.sendError("Access denied", HTTP_STATUS.FORBIDDEN);};
       }
-      
+
       req.user = user;
       next();
     };

@@ -1,8 +1,9 @@
 <div>
-    <a href="/products">Volver a lista de productos</a>
+    <a href="/home">Volver al inicio</a><br><br>
+    <a href="/products">Ver lista de productos</a>
     <h2>Tu Carrito:</h2>
     <span id="cart" cid={{cid}}></span>
-    <h3>Productos</h3>
+    <h3>{{text}}</h3>
     {{#each cartProducts}}
     <div>
         <div>
@@ -13,10 +14,12 @@
         <button class="btnsDelete"  pid={{this.product}}>Delete from cart</button>
     </div>
     {{/each}}
+    <div style="visibility: {{visibility}}"  >
     <p>---------------------------</p>
     <h3>Subtotal:</h3>
     <button id="clean">Vaciar carrito</button><br><br>
-    <button id="purchase" style="visibility: {{visibility}}"  >Comprar</button>
+    <button id="purchase" >Comprar</button>
+    </div>
 </div>
 
 <script src="/daos/mongoManagers/carts.manager.js"></script>

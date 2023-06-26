@@ -2,8 +2,8 @@ import { Router } from "express";
 const router = Router();
 
 import MongoStore from "connect-mongo";
-
 import session from "express-session";
+
 import ViewsController from "../../controllers/views.controller.js";
 import CustomRouter from "../customRouter.js";
 
@@ -23,7 +23,11 @@ import CustomRouter from "../customRouter.js";
 export class ViewsRouter extends CustomRouter {
 
   init() {
+    this.get("/home", ["USER", "ADMIN"], ViewsController.homeView)
+
     this.get("/products", ["USER", "ADMIN"], ViewsController.productsView);
+
+    this.get("/manageProducts", ["ADMIN"], ViewsController.manageProductsView)
 
     this.get("/carts/:cid", ["USER", "ADMIN"], ViewsController.cartByIdView);
 
