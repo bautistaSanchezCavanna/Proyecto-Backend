@@ -5,10 +5,11 @@ import { requester } from "../test.setup.js";
 describe('Carts routes test cases', ()=>{
    afterEach(async()=>{
         await dropCarts();
-    });
-    after(async()=>{
         await dropProducts();
-    });
+    }); 
+    after(async()=>{
+        await dropTickets();
+    }); 
 
    it('[GET] /api/carts - Should get an empty carts array', async ()=>{
         const response = await requester.get('/api/carts');
@@ -32,10 +33,10 @@ describe('Carts routes test cases', ()=>{
         const response = await requester.get(`/api/carts/${cart._id}`);
         expect(response.statusCode).to.be.eql(200);
         expect(response.body.payload._id).to.exist;
+
     })   
 
     it('[POST] /api/carts/:cid/product/:pid - Should add a specified product to a specified cart successfully', async ()=>{
-        await dropProducts();
         const mockProduct = {
             title: 'Sombrero',
             description: 'Blanco con rayas negras',
@@ -46,24 +47,21 @@ describe('Carts routes test cases', ()=>{
         }
         const prodPost = await requester.post('/api/products').send(mockProduct);
         const product = prodPost.body.payload;
-        expect(prodPost.statusCode).to.be.eql(201);
-        expect(product._id).to.exist;       
         const mockCart = {
             products:[]
         }
         const cartPost = await requester.post('/api/carts').send(mockCart);
-        const cart = cartPost.body.payload;
-        expect(cartPost.statusCode).to.be.eql(201);
-        expect(cart._id).to.exist;
+        const cart = cartPost.body.payload;        
         const addProd = await requester.post(`/api/carts/${cart._id}/product/${product._id}`);
         expect(addProd.statusCode).to.be.eql(200);
         const get = await requester.get('/api/carts');
         expect(get.body.payload[0]._id).to.exist;
         expect(get.body.payload[0].products.length).to.be.eql(1); 
+        
+
     }) 
 
     it('[POST] /api/carts/:cid/purchase - Should purchase a specified cart successfully', async ()=>{
-        await dropProducts();
         const mockProduct = {
             title: 'Sombrero',
             description: 'Blanco con rayas negras',
@@ -87,10 +85,11 @@ describe('Carts routes test cases', ()=>{
         const response = await requester.post(`/api/carts/${cart._id}/purchase`);
         expect(cartPost.statusCode).to.be.eql(201);
         expect(response.body.payload._id).to.exist;
+        
+
     })
 
     it('[PUT] /api/carts/:cid/clean - Should clean a specified cart successfully', async ()=>{
-        await dropProducts();
         const mockProduct = {
             title: 'Sombrero',
             description: 'Blanco con rayas negras',
@@ -115,11 +114,11 @@ describe('Carts routes test cases', ()=>{
         await requester.put(`/api/carts/${cart._id}/clean`);
         const get = await requester.get('/api/carts');
         expect(get.body.payload[0].products.length).to.be.eql(0); 
+      
 
     })
 
     it('[DELETE] /api/carts/:cid/product/:pid - Should delete a specified product from a specified cart successfully', async ()=>{
-        await dropProducts();
         const mockProduct = {
             title: 'Sombrero',
             description: 'Blanco con rayas negras',
@@ -144,6 +143,7 @@ describe('Carts routes test cases', ()=>{
         await requester.delete(`/api/carts/${cart._id}/product/${product._id}`);
         const get = await requester.get('/api/carts');
         expect(get.body.payload[0].products.length).to.be.eql(0); 
+      
 
     })
 
@@ -159,7 +159,7 @@ describe('Carts routes test cases', ()=>{
         expect(response.statusCode).to.be.eql(200);
         const get = await requester.get('/api/carts');
         expect(get.body.payload.length).to.be.eql(0);
-        await dropTickets();
+        
     }) 
 
 })

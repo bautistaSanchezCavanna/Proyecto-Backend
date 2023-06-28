@@ -17,17 +17,17 @@ after(async ()=>{
 });
 
 export const dropUsers = async ()=>{
-    await userModel.collection.drop();
+    await userModel.collection.deleteMany();
 }
 
 export const dropProducts = async ()=>{
-    await productModel.collection.drop();
+    await productModel.collection.deleteMany();
 }
 
 export const dropCarts = async ()=>{
-    await cartsModel.collection.drop();
+    await cartsModel.collection.deleteMany();
 }
 
 export const dropTickets = async ()=>{
-    await ticketsModel.collection.drop();
+    await ticketsModel.collection.deleteMany();
 }

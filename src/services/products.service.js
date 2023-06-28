@@ -4,7 +4,6 @@ import ProductsDAO from "../daos/mongoManagers/products.manager.js";
 import { HttpError } from "../utils/error.utils.js";
 
 export class ProductsService {
-
   static async getProducts(limit, sort) {
     try {
       const products = await ProductsDAO.getProducts(limit, sort);

@@ -3,7 +3,7 @@ import CustomRouter from "../customRouter.js";
   
   export class UsersRouter extends CustomRouter {
     init() {
-    this.get('/', ["ADMIN"], UsersController.getUsers);
+    this.get('/', ["PUBLIC"], UsersController.getUsers);
      
     this.get('/:uid', ["ADMIN"], UsersController.getUserById);
 

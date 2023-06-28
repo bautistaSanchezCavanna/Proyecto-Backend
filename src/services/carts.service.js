@@ -70,20 +70,6 @@ export default class CartsService {
     }
   }
 
-  static async updateCart(cid, pid, payload) {
-    try {
-      if (!cid) {
-        return new HttpError("Cart not found", HTTP_STATUS.NOT_FOUND);
-      }
-      if (!pid) {
-        return new HttpError("Product not found", HTTP_STATUS.NOT_FOUND);
-      }
-      return await CartsDAO.updateCart(cid, pid, payload);
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
-
   static async cleanCart(cid) {
     try {
       if (!cid) {

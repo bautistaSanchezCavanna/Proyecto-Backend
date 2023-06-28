@@ -1,3 +1,4 @@
+import argsConfig from "../config/args.config.js";
 import ENV from "../config/env.config.js";
 import { mailingTransporter } from "../config/mailing.config.js";
 import CartsService from "../services/carts.service.js";
@@ -6,9 +7,8 @@ import { UsersService } from "../services/users.service.js";
 export default class UsersController {
 
     static async getUsers(req, res, next) {
-        const email = req.user.email;
         try {
-            const response = await UsersService.getUsers(email);
+            const response = await UsersService.getUsers();
             if (response.status) {
                 return res.sendError(response, response.status);
             }

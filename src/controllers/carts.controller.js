@@ -68,20 +68,6 @@ export default class CartsController {
     }
   }
 
-  static async updateCart(req, res, next) {
-    const payload = req.body;
-    const { cid, pid } = req.params;
-    try {
-      const response = await CartsService.updateCart(cid, pid, payload);
-      if(response.status){
-        return res.sendError(response, response.status);
-      }
-      return res.sendSuccess(response);
-    } catch (error) {
-      next(error);
-    }
-  }
-
   static async cleanCart(req, res, next) {
     const {cid} = req.params;
     try {

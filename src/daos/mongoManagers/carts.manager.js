@@ -26,10 +26,6 @@ export default class CartsDAO {
     return await cartsModel.findOneAndUpdate({ _id: cid }, { $pull: { products: {product: { _id: pid }}}});
   }
 
-  static async updateCart(cid, pid, update) {
-    return await cartsModel.findOneAndUpdate({ _id: cid }, { products: { _id: pid, update } }, { new: true });
-  }
-
   static async cleanCart(cid) {
     return await cartsModel.findOneAndUpdate({ _id: cid }, { products: [] }, { new: true });
   } 

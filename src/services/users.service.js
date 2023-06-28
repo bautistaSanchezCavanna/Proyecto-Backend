@@ -15,15 +15,11 @@ class UserDTO {
   
 export class UsersService {
 
-    static async getUsers(email) {
+    static async getUsers() {
         try {
-            const allUsers = await UsersDAO.getUsers();
-            const users = allUsers.filter(user=> user.email !== email);
+            const users = await UsersDAO.getUsers();
             if(!users){
-                return new HttpError("Users not found", HTTP_STATUS.NOT_FOUND);
-            }
-            if(args.mode === 'production'){
-                return users.map(user => new UserDTO(user._id, user.first_name, user.email || user.githubLogin, user.role));
+                return new HttpError("Internal Server Error", HTTP_STATUS.SERVER_ERROR);
             }
             return users;
         } catch (error) {
@@ -73,8 +69,8 @@ export class UsersService {
     }
 
     static async deleteInactiveUsers(){
-        //const inactivity_limit = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
-        const inactivity_limit = new Date(Date.now() - 5 * 60 * 1000);
+        const inactivity_limit = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
+        //const inactivity_limit = new Date(Date.now() - 5 * 60 * 1000);
         const deletedUsers = await UsersDAO.deleteInactiveUsers(inactivity_limit);
         return deletedUsers;
     }

@@ -68,30 +68,4 @@ const swaggerOptions = {
 const specs = swaggerJSDoc(swaggerOptions);
 app.use("/api/doc", swaggerServe, swaggerSetup(specs));
 
-/* import cluster from "cluster";
-import { cpus } from "os"; 
- if(cluster.isPrimary){
-  const cores = cpus().length;
-  for(let i = 0; i < cores; i++){
-    cluster.fork();
-  }
-  cluster.on('exit', ()=>{
-    cluster.fork();
-  }); 
-}else{
-  app.listen(PORT, () => {console.log(`=> [${process.pid}] listening on port: ${PORT}`);});
-}
-  */
-
-/* import MongoStore from 'connect-mongo';
-import session from 'express-session';
-  app.use(session({
-    name:'session1',
-    secret:'rinoceronte',
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl:'mongodb+srv://bsanchezcavanna:lJkVJFQEsEcyKtOh@codercluster.sukhsuw.mongodb.net/dataSessions?retryWrites=true&w=majority'
-    })
-  }))  */
  
