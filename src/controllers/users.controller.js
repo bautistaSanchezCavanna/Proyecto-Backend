@@ -73,7 +73,6 @@ export default class UsersController {
                     html: `<div>
                             <h2>Aviso!</h2>
                             <p>Tu cuenta se eliminó por inactividad. Para iniciar sesión, deberás registrarte nuevamente.</p>
-                            <a href="http://localhost:8080/register">Registrarse</a> nuevamente.</p>
                           </div>`,
                     attachments: []
                   } 

@@ -70,7 +70,6 @@ export class UsersService {
 
     static async deleteInactiveUsers(){
         const inactivity_limit = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
-        //const inactivity_limit = new Date(Date.now() - 5 * 60 * 1000);
         const deletedUsers = await UsersDAO.deleteInactiveUsers(inactivity_limit);
         return deletedUsers;
     }
