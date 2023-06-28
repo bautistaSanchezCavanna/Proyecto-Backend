@@ -1,4 +1,3 @@
-import argsConfig from "../config/args.config.js";
 import ENV from "../config/env.config.js";
 import { mailingTransporter } from "../config/mailing.config.js";
 import CartsService from "../services/carts.service.js";

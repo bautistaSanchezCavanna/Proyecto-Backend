@@ -41,11 +41,9 @@ export default class CustomRouter {
       if (roles[0] === "PUBLIC") {
         return next();
       }
-      const redirect = `<h1>Error: Not authenticated.</h1><p>You must <a href="/">log in</a></p>`;
 
       const token = req.cookies[EnvConfig.SESSION_KEY];
       if (!token) {
-        //return res.send(redirect);
         return res.sendError("Not authenticated", HTTP_STATUS.UNAUTHORIZED);
       };
 
