@@ -38,7 +38,7 @@ registerForm?.addEventListener("submit", (e) => {
     method: "post",
     body: JSON.stringify(info),
     headers: { "Content-Type": "application/json" },
-  }).then((window.location.href = "http://localhost:8080/"));
+  }).then((window.location.href = "/"));
   registerForm.reset();
 });
 
