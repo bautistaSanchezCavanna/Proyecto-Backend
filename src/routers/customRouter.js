@@ -2,6 +2,7 @@ import { Router } from "express";
 import { verify } from "jsonwebtoken";
 import EnvConfig from "../config/env.config.js";
 import { HTTP_STATUS } from "../constants/constants.js";
+import args from "../config/args.config.js";
 
 export default class CustomRouter {
   constructor() {
@@ -34,6 +35,9 @@ export default class CustomRouter {
 
   handleAuthRoles(roles) {
     return async (req, res, next) => {
+      if(args.mode === 'development'){
+        return next();
+      }
       if (roles[0] === "PUBLIC") {
         return next();
       }
@@ -57,6 +61,7 @@ export default class CustomRouter {
       req.user = user;
       next();
     };
+  
   }
 
 

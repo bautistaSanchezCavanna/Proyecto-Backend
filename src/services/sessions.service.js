@@ -16,6 +16,8 @@ export class SessionsService {
         if (!isValidPassword(user, password)) {
            return new HttpError("Wrong email or password", HTTP_STATUS.FORBIDDEN);
         }else{
+          user.lastConnection = new Date();
+          user.save();
             const sessionUser = {
                 _id: user._id,
                 first_name: user.first_name,
@@ -23,7 +25,8 @@ export class SessionsService {
                 age: user.age,
                 role: user.role,
                 email: user.email,
-                cart: user.cart
+                cart: user.cart,
+                lastConnection: user.lastConnection
               };
               return sessionUser;
         }
@@ -51,14 +54,16 @@ export class SessionsService {
           password: hashPassword(password),
           cart:cart._id
         };
-        await UsersDAO.createUser(newUser);
+        const createdUser = await UsersDAO.createUser(newUser);
         const newUserDTO = {
+          _id: createdUser._id,
           first_name: newUser.first_name,
           last_name: newUser.last_name,
           age: newUser.age,
           role: newUser.role,
           email: newUser.email,
-          cart: newUser.cart._id
+          cart: newUser.cart._id,
+          lastConnection: newUser.lastConnection
         }
         return newUserDTO;
       }

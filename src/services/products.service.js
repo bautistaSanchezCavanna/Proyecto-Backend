@@ -74,9 +74,8 @@ export class ProductsService {
         if(!pid){
             return new HttpError('Product not found', HTTP_STATUS.NOT_FOUND);
         }
-        await ProductsDAO.deleteProduct(pid);
-        const updatedList = await ProductsDAO.getProducts();
-        return updatedList;
+        const productDeleted = await ProductsDAO.deleteProduct(pid);
+        return productDeleted;
     } catch (error) {
       throw new Error(error.message);
     }

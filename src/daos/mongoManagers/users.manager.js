@@ -3,7 +3,7 @@ import { userModel } from "../schemas/users.schema.js";
 export default class UsersDAO {
 
     static async getUsers(){
-        return await userModel.find(/* {role: "USER"} */);
+        return await userModel.find();
     }
 
     static async getUserByEmail(mail){
@@ -24,5 +24,11 @@ export default class UsersDAO {
 
     static async deleteUser(uid){
     return await userModel.findOneAndDelete({_id: uid});
+    }
+
+    static async deleteInactiveUsers(inactivity_limit){
+    const usersToDelete = await userModel.find({ lastConnection: { $lt: inactivity_limit } });
+    await userModel.deleteMany({ lastConnection: { $lt: inactivity_limit } })
+    return usersToDelete;
     }
 }

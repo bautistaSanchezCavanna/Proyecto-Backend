@@ -2,19 +2,19 @@
     <h1>Administración de usuarios</h1>
     <a href="/home">Volver al inicio</a>
     <h2>Users:</h2>
+    <button id="btnDeleteInactive">Eliminar usuarios inactivos</button>
     <p>______________________________________________________</p>
     {{#each users}}
     <div>
         <h2>Name: {{this.name}}</h2>
         <div>
             <h3>Role: {{this.role}}</h3>
-            <p>Email: {{this.email}}</p>
-            <p>Id: {{this._id}}</p>
+            <h3>Email: {{this.email}}</h3>
         </div> 
-        <button class="btnsEliminarUser"  uid={{this._id}}>Eliminar Usuario</button>
         <p>Cambiar rol a:</p>
         <button class="rol-admin"  uid={{this._id}}>"ADMIN"</button>
-        <button class="rol-user"  uid={{this._id}}>"USER"</button>
+        <button class="rol-user"  uid={{this._id}}>"USER"</button><br><br>
+        <button class="btnsEliminarUser"  uid={{this._id}}>Eliminar Usuario</button>
     </div>
     <p>______________________________________________________</p>
     {{/each}}

@@ -22,7 +22,7 @@ export default class ProductsDAO {
   }
 
   static async updateProduct(id, data){
-    return await productModel.findOneAndUpdate(id, data, {new:true});
+    return await productModel.findOneAndUpdate({_id: id}, data, {new:true});
   }
 
   static async deleteProduct(id){

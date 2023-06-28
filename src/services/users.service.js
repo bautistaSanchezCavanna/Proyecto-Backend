@@ -1,3 +1,4 @@
+import args from "../config/args.config.js";
 import { HTTP_STATUS } from "../constants/constants.js";
 import CartsDAO from "../daos/mongoManagers/carts.manager.js";
 import UsersDAO from "../daos/mongoManagers/users.manager.js";
@@ -14,14 +15,17 @@ class UserDTO {
   
 export class UsersService {
 
-    static async getUsers() {
+    static async getUsers(email) {
         try {
-            const users = await UsersDAO.getUsers();
+            const allUsers = await UsersDAO.getUsers();
+            const users = allUsers.filter(user=> user.email !== email);
             if(!users){
                 return new HttpError("Users not found", HTTP_STATUS.NOT_FOUND);
             }
-            const usersDTO = users.map(user => new UserDTO(user._id, user.first_name, user.email || user.githubLogin, user.role));
-            return usersDTO;
+            if(args.mode === 'production'){
+                return users.map(user => new UserDTO(user._id, user.first_name, user.email || user.githubLogin, user.role));
+            }
+            return users;
         } catch (error) {
             throw new Error(error.message);
         }
@@ -32,6 +36,9 @@ export class UsersService {
             const user = await UsersDAO.getUserById(uid);
             if(!user){
                 return new HttpError("User not found", HTTP_STATUS.NOT_FOUND);
+            }
+            if(args.mode === 'production'){
+                return new UserDTO(user._id, user.first_name, user.email || user.githubLogin, user.role)
             }
             return user;
         } catch (error) {
@@ -63,5 +70,12 @@ export class UsersService {
         } catch (error) {
             throw new Error(error.message);
         }
+    }
+
+    static async deleteInactiveUsers(){
+        //const inactivity_limit = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
+        const inactivity_limit = new Date(Date.now() - 5 * 60 * 1000);
+        const deletedUsers = await UsersDAO.deleteInactiveUsers(inactivity_limit);
+        return deletedUsers;
     }
 }

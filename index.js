@@ -7,8 +7,6 @@ import mongoose from "mongoose";
 import passport from "passport";
 import cookieParser from 'cookie-parser';
 
-import { argsConfig } from "./src/config/args.config.js";
-
 import Handlebars from "handlebars";
 import handlebars from "express-handlebars";
 import {allowInsecurePrototypeAccess} from '@handlebars/allow-prototype-access';
@@ -17,7 +15,6 @@ import apiRoutes from "./src/routers/app.routers.js";
 import ViewsRouter  from "./src/routers/vistas/views.routes.js";
 
 import ENV from "./src/config/env.config.js";
-
 
 import swaggerJSDoc from "swagger-jsdoc";
 import {serve as swaggerServe, setup as swaggerSetup} from 'swagger-ui-express';
@@ -33,19 +30,19 @@ app.set("view engine", "handlebars");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/src"));
+
 app.use(cookieParser());
 app.use(passport.initialize());
+
 
 app.use("/api", apiRoutes);
 app.use("/", ViewsRouter.getRouter());
 
-app.use(express.static(__dirname + "/public"));
-app.use(express.static(__dirname + "/src"));
-
-argsConfig();
 
 mongoose.set('strictQuery', true);
-mongoose.connect(ENV.MONGO_URI, (error) => {
+mongoose.connect(ENV.MONGO_URI, ()=>{console.log(`Connected to MongoDB`);}, (error) => {
     if (error) {
       console.log("Cannot connect to database: " + error);
       process.exit();

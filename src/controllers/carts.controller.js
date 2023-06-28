@@ -137,7 +137,6 @@ export default class CartsController {
       } 
       await mailingTransporter.sendMail(mailParams);
       return res.cookie(ENV.TICKET_KEY, response._id, ticketCookieOptions).sendSuccess(response);
-
     } catch (error) {
       next(error);
     }

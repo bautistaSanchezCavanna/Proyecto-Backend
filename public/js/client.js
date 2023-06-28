@@ -10,6 +10,7 @@ const adminRole = document.querySelectorAll('.rol-admin');
 const userRole = document.querySelectorAll('.rol-user');
 const prodForm = document.getElementById("formAgregar");
 const deleteProduct = document.querySelectorAll(".deleteProduct");
+const inactiveUsers = document.getElementById('btnDeleteInactive');
 
 const reload = ()=>{
   setTimeout(function() {
@@ -137,3 +138,9 @@ deleteProduct?.forEach(btn => {
     }).then(reload());
   });
 });
+
+inactiveUsers?.addEventListener('click', ()=>{
+  fetch('/api/users', {
+    method: "delete"
+  }).then(reload());
+})

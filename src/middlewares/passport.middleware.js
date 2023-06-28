@@ -103,10 +103,10 @@ passport.use(
       try {
         const data = profile._json;
         const user = await userModel.findOne({ email: data.email });
-        const createCart = await CartsDAO.createCart();
-        const cart = await CartsDAO.getCartById(createCart._id);
-
+        
         if (!user) {
+          const createCart = await CartsDAO.createCart();
+          const cart = await CartsDAO.getCartById(createCart._id);
           const newUser = {
             first_name: data.name?.split(" ")[0],
             last_name: data.name?.split(" ")[1],

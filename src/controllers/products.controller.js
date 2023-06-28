@@ -1,3 +1,4 @@
+import { HTTP_STATUS } from "../constants/constants.js";
 import { ProductsService } from "../services/products.service.js";
 
 export default class ProductsController {
@@ -5,7 +6,6 @@ export default class ProductsController {
   static async getProducts(req, res, next) {
     const { limit, sort } = req.query;
     try {
-      console.log(req.query);
       const response = await ProductsService.getProducts(limit, sort);
       if(response.status){
         return res.sendError(response, response.status);
@@ -20,7 +20,7 @@ export default class ProductsController {
     const productPayload = req.body;
     try {
       const response = await ProductsService.createProduct(productPayload);
-      return res.sendSuccess(response);
+      return res.sendSuccess(response, HTTP_STATUS.CREATED);
     } catch (error) {
       next(error);
     }
