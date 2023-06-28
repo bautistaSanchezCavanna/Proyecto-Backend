@@ -106,7 +106,7 @@ btnPurchase?.addEventListener('click', ()=>{
  const cid = cart.getAttribute('cid');
   fetch(`/api/carts/${cid}/purchase`, {
     method: 'post'
-  }).then( () => (window.location.href = "http://localhost:8080/ticket"));
+  }).then( () => (window.location.href = "/ticket"));
 });
 
 cleanCart?.addEventListener('click', ()=>{
